@@ -3,6 +3,6 @@ namespace SIGU.Aplicacion.Interfaces;
 
 public interface IRepositorioPersona : IRepositorioBase<Persona>
 {
-    Persona? obtenerPorDNI(string dni);
-    Persona? obtenerPorEmail(string email);
+    Task<Persona?> obtenerPorDniAsync(string dni);
+    Task<Persona?> obtenerPorEmailAsync(string email);
 }

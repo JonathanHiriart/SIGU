@@ -4,5 +4,5 @@ using SIGU.Aplicacion.Enums;
 namespace SIGU.Aplicacion.Interfaces;
 public interface IServicioAutorizacion
 {
-    bool EstaAutorizado(Persona persona,Permiso permiso);
+    bool EstaAutorizado(Guid IdUsuario,Permiso permiso);
 }
