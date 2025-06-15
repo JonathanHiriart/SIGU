@@ -3,9 +3,9 @@ namespace SIGU.Aplicacion.Interfaces;
 public interface IRepositorioBase<T>
 {
 	void Agregar(T entidad);
-	void Modificar(T entidad, int id);
-	void Eliminar(int id);
+	void Modificar(T entidad, Guid id);
+	void Eliminar(Guid id);
 	List<T>? Listar();
-	T? ObtenerPorID(int id);
+	T? ObtenerPorID(Guid id);
 
 }
