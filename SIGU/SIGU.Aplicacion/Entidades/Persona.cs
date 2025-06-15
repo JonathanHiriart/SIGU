@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using SIGU.Aplicacion.Excepciones;
+using SIGU.Aplicacion.Enums;
 namespace SIGU.Aplicacion.Entidades;
 public class Persona
 {

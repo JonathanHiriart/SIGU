@@ -1,4 +1,5 @@
 using SIGU.Aplicacion.Excepciones;
+using SIGU.Aplicacion.Enums;
 namespace SIGU.Aplicacion.Entidades;
 public class Reserva
 {
@@ -22,7 +23,7 @@ public class Reserva
         if (personaId <= 0) throw new ValidacionException("El ID de la persona no debe estar vacio");
         if (eventoDeportivoId <= 0) throw new ValidacionException("El id de Evento Deportivo no debe estar vacio");
         if (estadoReserva == null) throw new ValidacionException("El estado de la reserva no debe estar vacio");
-        EstadoReserva = estadoReserva;
+        EstadoAsistencia = estadoReserva;
         PersonaId = personaId;
         EventoDeportivoId = eventoDeportivoId;
     }
