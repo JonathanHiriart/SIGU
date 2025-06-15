@@ -1,7 +1,7 @@
 using SIGU.Aplicacion.Entidades;
 namespace SIGU.Aplicacion.Interfaces;
 
-public interface IRepositorioEventoDeportivo
+public interface IRepositorioEventoDeportivo : IRepositorioBase<EventoDeportivo>
 {
-	List<EventoDeportivo> ObtenerEventosDeportivos();
+    List<EventoDeportivo> ObtenerPorPersona(int personaId);
 }
