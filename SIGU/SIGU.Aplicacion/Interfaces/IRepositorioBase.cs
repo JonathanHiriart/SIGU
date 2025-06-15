@@ -2,10 +2,10 @@ namespace SIGU.Aplicacion.Interfaces;
 
 public interface IRepositorioBase<T>
 {
-	void Agregar(T entidad);
-	void Modificar(T entidad, Guid id);
-	void Eliminar(Guid id);
-	List<T>? Listar();
-	T? ObtenerPorID(Guid id);
+	Task AgregarAsync(T entidad);
+	Task ModificarAsync(T entidad, Guid id);
+	Task EliminarAsync(Guid id);
+	Task<List<T>?> ListarAsync();
+	Task<T?> ObtenerPorIDAsync(Guid id);
 
 }
