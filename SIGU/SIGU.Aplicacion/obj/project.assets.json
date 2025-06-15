@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Yoni\\WorkSpace\\SistemaDeGestionUniversitario\\SIGU\\SIGU.Aplicacion\\SIGU.Aplicacion.csproj",
+      "projectUniqueName": "C:\\Users\\Yoni\\WorkSpace\\SIGU\\SIGU\\SIGU.Aplicacion\\SIGU.Aplicacion.csproj",
       "projectName": "SIGU.Aplicacion",
-      "projectPath": "C:\\Users\\Yoni\\WorkSpace\\SistemaDeGestionUniversitario\\SIGU\\SIGU.Aplicacion\\SIGU.Aplicacion.csproj",
+      "projectPath": "C:\\Users\\Yoni\\WorkSpace\\SIGU\\SIGU\\SIGU.Aplicacion\\SIGU.Aplicacion.csproj",
       "packagesPath": "C:\\Users\\Yoni\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Yoni\\WorkSpace\\SistemaDeGestionUniversitario\\SIGU\\SIGU.Aplicacion\\obj\\",
+      "outputPath": "C:\\Users\\Yoni\\WorkSpace\\SIGU\\SIGU\\SIGU.Aplicacion\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
