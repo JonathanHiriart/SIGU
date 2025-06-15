@@ -3,7 +3,7 @@ using SIGU.Aplicacion.Enums;
 namespace SIGU.Aplicacion.Entidades;
 public class Reserva
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public int PersonaId { get; set; } = 0;
     public int EventoDeportivoId { get; set; } = 0;
     public DateTime FechaAlta { get; set; } = DateTime.Now;

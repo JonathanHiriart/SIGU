@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Enums;
 namespace SIGU.Aplicacion.Entidades;
 public class Persona
 {
-    public int Id { get; private set; } 
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public string Nombre { get; set; } = "";
     public string DNI { get; set; } = "";
     public string Apellido { get; set; } = "";

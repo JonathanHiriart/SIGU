@@ -1,9 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using SIGU.Aplicacion.Excepciones;
 namespace SIGU.Aplicacion.Entidades;
 public class EventoDeportivo
 {
-    public int Id { get; private set;}
+    public Guid Id { get; private set;} = Guid.NewGuid();
     public string? Nombre { get; set; } = "";
     public string? Descripcion {get;set;} = "";
     public DateTime FechaHoraInicio { get; set; } = DateTime.Now;
