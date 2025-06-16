@@ -22,7 +22,8 @@ public class UsuarioAltaUseCase
     }
     public async Task EjecutarAsync(UsuarioDTO usuario, Guid idUsuario)
     {
-        if (!_servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.UsuarioAlta))
+        Boolean tienePermiso=_servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.UsuarioAlta;
+        if (tienePermiso== false)
         {
             throw new FalloAutorizacionException("El usuario no tiene permisos para crear nuevos usuarios.");
         }

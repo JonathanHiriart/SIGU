@@ -3,7 +3,7 @@ namespace SIGU.Aplicacion.Interfaces;
 
 public interface IRepositorioReserva : IRepositorioBase<Reserva>
 {
-	Reserva? ObtenerPorPersonaYEvento(Guid personaId, Guid eventoId);
-	List<Reserva> ObtenerPorEvento(Guid eventoId);
-	List<Reserva> ObtenerPorPersona(Guid personaId);
+	Task<Reserva?> ObtenerPorPersonaYEventoAsync(Guid personaId, Guid eventoId);
+	Task<List<Reserva>> ObtenerPorEventoAsync(Guid eventoId);
+	Task<List<Reserva>> ObtenerPorPersonaAsync(Guid personaId);
 }

@@ -7,10 +7,10 @@ namespace SIGU.Aplicacion.Servicios;
 
 public class ServicioAutorizacion : IServicioAutorizacion
 {
-    private readonly IRepositorioPersona _repositorioPersona;
-    public ServicioAutorizacion(IServicioAutorizacion servicioAutorizacion, IRepositorioPersona repositorioPersona)
+    private readonly IRepositorioUsuario _repositorioUsuario;
+    public ServicioAutorizacion(IServicioAutorizacion servicioAutorizacion, IRepositorioUsuario repositorioUsuario)
     {
-        _repositorioPersona = repositorioPersona;
+        _repositorioUsuario= repositorioUsuario;
     }
     public async Task<bool> EstaAutorizado(Guid idUsuario, Permiso permiso)
     {
@@ -22,12 +22,12 @@ public class ServicioAutorizacion : IServicioAutorizacion
         {
             throw new ArgumentException("El permiso especificado no es valido.");
         }
-        var usuario = await _repositorioPersona.ObtenerPorIDAsync(idUsuario);
+        var usuario = await _repositorioUsuario.ObtenerPorIDAsync(idUsuario);
         if (usuario == null)
         {
             throw new EntidadNotFoundException($"No se encontró un usuario con el ID.");
         }
-        if (!usuario.Permisos.Contains(permiso))
+        if (! usuario.Permisos.Contains(permiso))
         {
             throw new ValidacionException($"El usuario no tiene el permiso {permiso}.");
         }
