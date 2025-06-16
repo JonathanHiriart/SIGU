@@ -11,7 +11,6 @@ public class ValidadorEventoDeportivo
     {
         _repositorioUsuario = repositorioUsuario;
     }
-
     public async Task<(bool esValido, string msgError)> ValidarParaAgregarAsync(EventoDeportivo evento)
     {
         var (valido, errorComun) = ValidarEnMemoria(evento);
@@ -24,7 +23,6 @@ public class ValidadorEventoDeportivo
 
         return (true, "");
     }
-
     private (bool esValido, string msgError) ValidarEnMemoria(EventoDeportivo evento)
     {
         if (evento == null)

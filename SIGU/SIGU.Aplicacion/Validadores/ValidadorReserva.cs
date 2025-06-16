@@ -21,12 +21,12 @@ public class ValidadorReserva
             msgError = "La reserva no puede ser nula.";
             return (false, msgError);
         }
-        var (valido,errorComun) = await ValidarPersonaYEvento(reserva.PersonaId, reserva.EventoDeportivoId);
+        var (valido,errorComun) = await ValidarPersonaYEvento(reserva.usuarioID, reserva.EventoDeportivoId);
         if (!valido)
         {
             return (false, errorComun);
         }
-        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.PersonaId, reserva.EventoDeportivoId);
+        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.usuarioID, reserva.EventoDeportivoId);
         if (yaReservado != null)
         {
             msgError = "La persona ya tiene una reserva para este evento deportivo.";
@@ -42,12 +42,12 @@ public class ValidadorReserva
             msgError = "La reserva no puede ser nula.";
             return (false, msgError);
         }
-        var (valido, errorComun) = await ValidarPersonaYEvento(reserva.PersonaId, reserva.EventoDeportivoId);
+        var (valido, errorComun) = await ValidarPersonaYEvento(reserva.usuarioID, reserva.EventoDeportivoId);
         if (!valido)
         {
             return (false, errorComun);
         }
-        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.PersonaId, reserva.EventoDeportivoId);
+        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.usuarioID, reserva.EventoDeportivoId);
         if (yaReservado == null)
         {
             msgError = "La Reserva a modificar no existe.";

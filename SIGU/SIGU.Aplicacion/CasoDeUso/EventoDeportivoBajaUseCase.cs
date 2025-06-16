@@ -30,7 +30,7 @@ public class EventoDeportivoBajaUseCase
         {
             throw new ValidacionException("No se puede eliminar un evento deportivo que ya ha comenzado.");
         }
-        var reservas = _repositorioReserva.ObtenerPorEvento(idEvento);
+        var reservas = await _repositorioReserva.ObtenerPorEventoAsync(idEvento);
         if (reservas.Count != 0)
         {
             throw new ValidacionException("No se puede eliminar un evento deportivo que tiene reservas asociadas.");

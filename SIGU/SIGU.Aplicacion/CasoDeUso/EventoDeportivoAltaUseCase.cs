@@ -4,6 +4,7 @@ using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
 using SIGU.Aplicacion.Validadores;
+using System.Net.WebSockets;
 namespace SIGU.Aplicacion.CasoDeUso;
 public class EventoDeportivoAltaUseCase
 {
@@ -32,14 +33,12 @@ public class EventoDeportivoAltaUseCase
         {
             throw new ValidacionException("El responsable del evento deportivo no existe.");
         }
-
         EventoDeportivo? evento = new EventoDeportivo(dto.Nombre,dto.Descripcion,dto.FechaHoraInicio,dto.DuracionHoras,dto.CupoMaximo,dto.ResponsableId);
-
-        if(!_validadorEventoDeportivo.Validar(evento, out string msgError))
+        var (esValido, msgError) = await _validadorEventoDeportivo.ValidarParaAgregarAsync(evento); 
+        if(!esValido)
         {
             throw new ValidacionException(msgError);
         }
-
         await _repositorioEventoDeportivo.AgregarAsync(evento);
     }
 

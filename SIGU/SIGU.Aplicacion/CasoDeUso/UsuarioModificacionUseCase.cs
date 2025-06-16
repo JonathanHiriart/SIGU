@@ -22,12 +22,6 @@ public class UsuarioModificacionUseCase
 			throw new FalloAutorizacionException("El usuario no posee el permiso para relizar esta acci�n");
 		}
 
-		// 2. Verificar existencia de la persona
-		UsuarioDTO? usuario = await _repositorioUsuario.ObtenerPorIDAsync(IdPersonaAModificar);
-		if (usuario == null)
-		{
-			throw new EntidadNotFoundException("El usuario a modificar no existe");
-		}
 		await _repositorioUsuario.ModificarAsync(usuarioModificado, IdPersonaAModificar);
 	}
 }

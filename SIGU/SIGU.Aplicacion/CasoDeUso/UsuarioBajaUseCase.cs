@@ -1,7 +1,6 @@
 ﻿using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
-using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Interfaces;
 
 namespace SIGU.Aplicacion.CasoDeUso;
@@ -34,7 +33,7 @@ public class UsuarioBajaUseCase
             throw new EntidadNotFoundException("El usuario a eliminar no existe");
         }
         // 3. Verificar reservas asociadas
-        List<Reserva> reservas = _repositorioReserva.ObtenerPorPersona(IDBaja);
+        List<Reserva> reservas = await _repositorioReserva.ObtenerPorPersonaAsync(IDBaja);
         if (reservas != null && reservas.Count > 0)
         {
             throw new OperacionInvalidaException("El usuario a eliminar tiene reservas");

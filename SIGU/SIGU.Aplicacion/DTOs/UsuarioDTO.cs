@@ -7,7 +7,7 @@ public class UsuarioDTO
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     public string Nombre { get; set; } = string.Empty;
     [Required(ErrorMessage = "El Dni es obligatorio.")]
-    public int DNI { get; set; } = 0;
+    public string DNI { get; set; } = 0;
     [Required(ErrorMessage = "El apellido es obligatorio.")]
     public string Apellido { get; set; } = string.Empty;
     [Required(ErrorMessage = "El Email es obligatorio.")]
