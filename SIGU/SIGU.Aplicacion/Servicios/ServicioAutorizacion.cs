@@ -1,25 +1,36 @@
-﻿using SIGU.Aplicacion.Interfaces;
-using SIGU.Aplicacion.Entidades;
+﻿
 using SIGU.Aplicacion.Enums;   
+using SIGU.Aplicacion.Interfaces;
+using SIGU.Aplicacion.Excepciones;
+using System.Threading.Tasks;
 namespace SIGU.Aplicacion.Servicios;
 
 public class ServicioAutorizacion : IServicioAutorizacion
 {
-    private readonly IServicioAutorizacion _servicioAutorizacion;
-    public ServicioAutorizacion(IServicioAutorizacion servicioAutorizacion)
+    private readonly IRepositorioPersona _repositorioPersona;
+    public ServicioAutorizacion(IServicioAutorizacion servicioAutorizacion, IRepositorioPersona repositorioPersona)
     {
-        _servicioAutorizacion = servicioAutorizacion;
+        _repositorioPersona = repositorioPersona;
     }
-    public bool EstaAutorizado(Usuario Usuario, Permiso permiso)
+    public async Task<bool> EstaAutorizado(Guid idUsuario, Permiso permiso)
     {
-        if(persona == null)
+        if(idUsuario== Guid.Empty)
         {
-            throw new ArgumentNullException("La persona no puede ser nula.");
+            throw new EntidadNotFoundException("El ID de usuario no puede ser un GUID vacío.");
         }
         if(!Enum.IsDefined(typeof(Permiso), permiso))
         {
             throw new ArgumentException("El permiso especificado no es valido.");
         }
-        return _servicioAutorizacion.EstaAutorizado(persona, permiso);
+        var usuario = await _repositorioPersona.ObtenerPorIDAsync(idUsuario);
+        if (usuario == null)
+        {
+            throw new EntidadNotFoundException($"No se encontró un usuario con el ID.");
+        }
+        if (!usuario.Permisos.Contains(permiso))
+        {
+            throw new ValidacionException($"El usuario no tiene el permiso {permiso}.");
+        }
+        return true;
     }
 }
