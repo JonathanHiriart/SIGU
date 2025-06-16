@@ -6,11 +6,11 @@ namespace SIGU.Aplicacion.Validadores;
 
 public class ValidadorEventoDeportivo
 {
-    private readonly IRepositorioPersona _repositorioPersona;
+    private readonly IRepositorioUsuario _repositorioUsuario;
 
-    public ValidadorEventoDeportivo(IRepositorioPersona p)
+    public ValidadorEventoDeportivo(IRepositorioUsuario p)
     {
-        _repositorioPersona = p;
+        _repositorioUsuario= p;
     }
 
     public bool Validar(EventoDeportivo eDeportivo, out string msgError)
@@ -48,7 +48,7 @@ public class ValidadorEventoDeportivo
                 }
                 else
                 {
-                    var responsable = _repositorioPersona.ObtenerPorIDAsync(eDeportivo.ResponsbleID);
+                    var responsable = _repositorioUsuario.ObtenerPorIDAsync(eDeportivo.ResponsbleID);
                     if (responsable == null)
                     {
                         msgError = "El responsable del evento deportivo no existe.";

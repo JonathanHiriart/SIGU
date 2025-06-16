@@ -2,8 +2,8 @@ using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.DTOs;
 namespace SIGU.Aplicacion.Interfaces;
 
-public interface IRepositorioUsuario : IRepositorioBase<UsuarioDTO>
+public interface IRepositorioUsuario : IRepositorioBase<Usuario>
 {
-    Task<UsuarioDTO> obtenerPorDni(int dni);
-    Task<UsuarioDTO> obtenerPorEmail(string email);
+    Task<Usuario> obtenerPorDni(int dni);
+    Task<Usuario> obtenerPorEmail(string email);
 }
