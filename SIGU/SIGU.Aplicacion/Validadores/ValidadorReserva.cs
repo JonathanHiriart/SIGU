@@ -58,19 +58,27 @@ public class ValidadorReserva
     private async Task<(bool esValido, string msgError)> ValidarPersonaYEvento(Guid personaId, Guid eventoId)
     {
         if (personaId == Guid.Empty)
-            return (false, "El ID de la persona no puede ser nulo.");
-
+        {
+            string msgError = "El ID de la persona no puede ser nulo.";
+            return (false, msgError);
+        }
         var persona = await _repositorioUsuario.ObtenerPorIDAsync(personaId);
         if (persona == null)
-            return (false, "La persona no existe.");
-
+        {
+            string msgError = "La persona no existe.";
+            return (false, msgError);
+        }
         if (eventoId == Guid.Empty)
-            return (false, "El ID del evento deportivo no puede ser nulo.");
-
+        {
+            string msgError = "El ID del evento deportivo no puede ser nulo.";
+            return (false, msgError);
+        }
         var evento = await _repositorioEventoDeportivo.ObtenerPorIDAsync(eventoId);
         if (evento == null)
-            return (false, "El evento deportivo no existe.");
-
+        {
+            string msgError = "El evento deportivo no existe.";
+            return (false, msgError);
+        }
         return (true, "");
     }
 }
