@@ -19,7 +19,7 @@ public class EventoDeportivoAltaUseCase
         _servicioAutorizacion = servicioAutorizacion;
         _validadorEventoDeportivo = validadorEventoDeportivo;
     }
-    public async Task<EventoDeportivo> EjecutarAsync(EventoDeportivoDTO dto, Guid idUsuario)
+    public async Task EjecutarAsync(EventoDeportivoDTO dto, Guid idUsuario)
     {
         var estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoAlta);
         if (!estaAutorizado)
@@ -41,8 +41,6 @@ public class EventoDeportivoAltaUseCase
         }
 
         await _repositorioEventoDeportivo.AgregarAsync(evento);
-
-        return evento;
     }
 
 }
