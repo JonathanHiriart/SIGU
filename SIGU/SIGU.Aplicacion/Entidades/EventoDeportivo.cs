@@ -9,6 +9,9 @@ public class EventoDeportivo
     public double DuracionHoras{get;set;} = 0;
     public int CupoMaximo {get;set;} = 0;
     public Guid ResponsbleID { get; set; }
+    public Usuario Responsable { get; set; } = null!;
+
+    public List<Reserva> Reservas { get; set; } = new List<Reserva>();
     protected EventoDeportivo() { }
 
     public EventoDeportivo(string? nombre, string? descripcion, DateTime fechaInicio, double duracion, int cupo, Guid responsable)

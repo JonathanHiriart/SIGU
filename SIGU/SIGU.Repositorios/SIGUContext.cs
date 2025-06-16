@@ -17,37 +17,37 @@ public class SIGUContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // EventoDeportivo → Usuario (Responsable)
-        modelBuilder.Entity<EventoDeportivo>()
-            .HasOne<Usuario>()
-            .WithMany()
-            .HasForeignKey(e => e.ResponsbleID)
+        // Usuario → Reservas (1:N)
+        modelBuilder.Entity<Reserva>()
+            .HasOne(r => r.Usuario)
+            .WithMany(p => p.Reservas)
+            .HasForeignKey(r => r.usuarioID)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Reserva → Usuario
+        // EventoDeportivo → Reservas (1:N)
         modelBuilder.Entity<Reserva>()
-            .HasOne<Usuario>()
-            .WithMany()
-            .HasForeignKey(r => r.PersonaId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        // Reserva → EventoDeportivo
-        modelBuilder.Entity<Reserva>()
-            .HasOne<EventoDeportivo>()
-            .WithMany()
+            .HasOne(r => r.EventoDeportivo)
+            .WithMany(e => e.Reservas)
             .HasForeignKey(r => r.EventoDeportivoId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Usuario → EventoDeportivo (Responsable) (1:N)
+        modelBuilder.Entity<EventoDeportivo>()
+            .HasOne(e => e.Responsable)
+            .WithMany(p => p.EventosResponsables)
+            .HasForeignKey(e => e.ResponsbleID)
             .OnDelete(DeleteBehavior.Restrict);
 
         // Usuario.Permisos como string serializado
         var permisosConverter = new ValueConverter<List<Permiso>, string>(
-        permisos => string.Join(",", permisos.Select(p => p.ToString())),
-        texto => texto.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                      .Select(s => Enum.Parse<Permiso>(s))
-                      .ToList()
-        );
+            permisos => string.Join(",", permisos.Select(p => p.ToString())),
+            texto => texto.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                          .Select(s => Enum.Parse<Permiso>(s))
+                          .ToList()
+            );
 
-        modelBuilder.Entity<Usuario>()
-            .Property(u => u.Permisos)
-            .HasConversion(permisosConverter);
+            modelBuilder.Entity<Usuario>()
+                .Property(u => u.Permisos)
+                .HasConversion(permisosConverter);
     }
 }

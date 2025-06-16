@@ -10,6 +10,8 @@ public class Usuario
     public string Telefono { get; private set; } = "";
     public string Contrasenia { get; private set; } = "";
     public List<Permiso> Permisos { get; private set; } = new List<Permiso>();
+    public List<EventoDeportivo> EventosResponsables { get; set; } = new List<EventoDeportivo>();
+    public List<Reserva> Reservas { get; private set; } = new List<Reserva>();
 
     protected Usuario() { }
     public Usuario(string nombre, string apellido, string dni, string email, string telefono, string contrasenia)

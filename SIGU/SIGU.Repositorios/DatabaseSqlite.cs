@@ -14,7 +14,6 @@ public class DatabaseSqlite
         {
             Console.WriteLine("Database created successfully.");
         }
-
         var connection = context.Database.GetDbConnection();
         connection.Open();
 
