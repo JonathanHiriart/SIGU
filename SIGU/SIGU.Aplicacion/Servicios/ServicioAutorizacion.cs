@@ -10,7 +10,7 @@ public class ServicioAutorizacion : IServicioAutorizacion
     {
         _servicioAutorizacion = servicioAutorizacion;
     }
-    public bool EstaAutorizado(Persona persona, Permiso permiso)
+    public bool EstaAutorizado(Usuario Usuario, Permiso permiso)
     {
         if(persona == null)
         {
