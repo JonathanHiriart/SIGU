@@ -1,15 +1,18 @@
-using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Interfaces; 
 namespace SIGU.Aplicacion.Validadores;
 
 public class ValidadorUsuario
 {
-    private readonly IRepositorioUsuario _repositorio;
+    private readonly IRepositorioUsuario _repositorioUsuario;
+    private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
+    private readonly IRepositorioReserva _repositorioReserva;   
 
-    public ValidadorUsuario(IRepositorioUsuario repositorio)
+    public ValidadorUsuario(IRepositorioUsuario repositorioUsuario, IRepositorioEventoDeportivo repositorioEventoDeportivo, IRepositorioReserva repositorioReserva)
     {
-        _repositorio = repositorio;
+        _repositorioUsuario = repositorioUsuario;
+        _repositorioEventoDeportivo = repositorioEventoDeportivo;
+        _repositorioReserva = repositorioReserva;
     }
     public async Task<(bool esValido, string msgError)> ValidarParaAgregarAsync(Usuario usuario)
     {
@@ -20,7 +23,7 @@ public class ValidadorUsuario
         }
         if (string.IsNullOrEmpty(usuario.DNI))
         {
-            var existentePorDni = await _repositorio.obtenerPorDni(usuario.DNI);
+            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDni(usuario.DNI);
             if (existentePorDni != null)
             {
                 string msgError = "El DNI ya existe.";
@@ -29,10 +32,28 @@ public class ValidadorUsuario
         }
         if (!string.IsNullOrWhiteSpace(usuario.Email))
         {
-            var existentePorEmail = await _repositorio.obtenerPorEmail(usuario.Email);
+            Usuario? existentePorEmail = await _repositorioUsuario.obtenerPorEmail(usuario.Email);
             if (existentePorEmail != null)
             {
                 string msgError = "El email ya existe.";
+                return (false, msgError);
+            }
+        }
+        return (true, "");
+    }
+    public async Task<(bool esValido, string msgError)> ValidarParaModificarAsync(Usuario usuario)
+    {
+        var (valido, errorComun) = ValidarEnMemoria(usuario);
+        if (!valido)
+        {
+            return (false, errorComun);
+        }
+        if (string.IsNullOrEmpty(usuario.DNI))
+        {
+            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDni(usuario.DNI);
+            if (existentePorDni ==null)
+            {
+                string msgError = "El DNI no existe";
                 return (false, msgError);
             }
         }
