@@ -22,15 +22,18 @@ public class UsuarioAltaUseCase
     }
     public async Task EjecutarAsync(UsuarioDTO usuario, Guid idUsuario)
     {
-        Boolean tienePermiso=_servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.UsuarioAlta;
+        bool tienePermiso= await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.UsuarioAlta);
         if (tienePermiso== false)
         {
             throw new FalloAutorizacionException("El usuario no tiene permisos para crear nuevos usuarios.");
         }
-        if (!_validadorUsuario.Validador(usuario, out string mensaje)) {
-            throw new ValidacionException(mensaje);
-        }
         usuario.Contrasenia = _hasheador.Hashear(usuario.Contrasenia);
-        await _repositorioUsuario.AgregarAsync(usuario);
+        Usuario? usuarioAgregar = new Usuario(usuario.Nombre, usuario.Apellido,usuario.DNI ,usuario.Email,usuario.Telefono, usuario.Contrasenia);
+
+        var (esValido, msgError) = await _validadorUsuario.ValidarParaAgregarAsync(usuarioAgregar);
+        if (!esValido) {
+            throw new ValidacionException(msgError);
+        }
+        await _repositorioUsuario.AgregarAsync(usuarioAgregar);
     }
 }

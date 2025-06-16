@@ -1,7 +1,6 @@
 ﻿using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
-using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Interfaces;
 
 namespace SIGU.Aplicacion.CasoDeUso;
@@ -28,19 +27,19 @@ public class UsuarioBajaUseCase
             throw new FalloAutorizacionException("El usuario no posee el permiso para relizar esta acci�n");
         }
         // 2. Verificar existencia de la persona
-        var usuario =  await _repositorioUsuario.ObtenerPorIDAsync(IDBaja);
+        Usuario? usuario =  await _repositorioUsuario.ObtenerPorIDAsync(IDBaja);
         if (usuario == null)
         {
             throw new EntidadNotFoundException("El usuario a eliminar no existe");
         }
         // 3. Verificar reservas asociadas
-        List<Reserva> reservas = _repositorioReserva.ObtenerPorPersona(IDBaja);
+        List<Reserva> reservas = await _repositorioReserva.ObtenerPorPersonaAsync(IDBaja);
         if (reservas != null && reservas.Count > 0)
         {
             throw new OperacionInvalidaException("El usuario a eliminar tiene reservas");
         }
         // 4. Verificar si es responsable de alg�n evento deportivo
-        var eventos  =  await _repositorioEventoDeportivo.ObtenerPorPersonaAsync(IDBaja);
+        List<EventoDeportivo> eventos  =  await _repositorioEventoDeportivo.ObtenerPorPersonaAsync(IDBaja);
         if (eventos != null && eventos.Count > 0)
         {
             throw new OperacionInvalidaException("El usuario a eliminar contiene eventos deportivos");
