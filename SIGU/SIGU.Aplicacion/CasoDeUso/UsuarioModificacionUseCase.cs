@@ -16,7 +16,8 @@ public class UsuarioModificacionUseCase
 	public async void Ejecutar(Guid IdPersonaAModificar, UsuarioDTO usuarioModificado, Guid IdUsuario)
 	{
 		// 1. Verificar permiso
-		if (!_servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioModificacion))
+		Boolean tienePermiso = await _servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioModificacion);
+        if (tienePermiso == false)
 		{
 			throw new FalloAutorizacionException("El usuario no posee el permiso para relizar esta acci�n");
 		}

@@ -22,7 +22,8 @@ public class UsuarioBajaUseCase
     public async Task EjecutarAsync(Guid IDBaja, Guid IdUsuario)
     {
         // 1. Verificar permiso
-        if (!_servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioBaja))
+        Boolean tienePermiso = await _servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioBaja);
+        if (tienePermiso== false)
         {
             throw new FalloAutorizacionException("El usuario no posee el permiso para relizar esta acci�n");
         }

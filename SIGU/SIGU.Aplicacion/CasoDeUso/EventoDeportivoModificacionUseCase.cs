@@ -8,14 +8,14 @@ namespace SIGU.Aplicacion.CasoDeUso;
 public class EventoDeportivoModificacionUseCase
 {
 	private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
-	private readonly IRepositorioPersona _repositorioPersona;
+	private readonly IRepositorioUsuario _repositorioUsuario;
 	private readonly IServicioAutorizacion _servicioAutorizacion;
 	private readonly ValidadorEventoDeportivo _validadorEventoDeportivo;
 
-	public EventoDeportivoModificacionUseCase(IRepositorioEventoDeportivo repositorioEventoDeportivo, IRepositorioPersona repositorioPersona, IServicioAutorizacion servicioAutorizacion, ValidadorEventoDeportivo validadorEventoDeportivo)
+	public EventoDeportivoModificacionUseCase(IRepositorioEventoDeportivo repositorioEventoDeportivo, IRepositorioUsuario repositorioUsuario, IServicioAutorizacion servicioAutorizacion, ValidadorEventoDeportivo validadorEventoDeportivo)
 	{
 		_repositorioEventoDeportivo = repositorioEventoDeportivo;
-		_repositorioPersona = repositorioPersona;
+		_repositorioUsuario= repositorioUsuario;
 		_servicioAutorizacion = servicioAutorizacion;
 		_validadorEventoDeportivo = validadorEventoDeportivo;
 	}
@@ -26,7 +26,7 @@ public class EventoDeportivoModificacionUseCase
 		{
 			throw new FalloAutorizacionException("El usuario no tiene permiso para modificar eventos deportivos.");
 		}
-		var responsable = await _repositorioPersona.ObtenerPorIDAsync(dto.ResponsableId);
+		var responsable = await _repositorioUsuario.ObtenerPorIDAsync(dto.ResponsableId);
 		if (responsable == null)
 		{
 			throw new ValidacionException("El responsable del evento deportivo no existe.");

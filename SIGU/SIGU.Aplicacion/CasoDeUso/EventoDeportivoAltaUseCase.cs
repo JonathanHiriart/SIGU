@@ -8,14 +8,14 @@ namespace SIGU.Aplicacion.CasoDeUso;
 public class EventoDeportivoAltaUseCase
 {
     private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
-    private readonly IRepositorioUsuario _repositorioPersona;
+    private readonly IRepositorioUsuario _repositorioUsuario;
     private readonly IServicioAutorizacion _servicioAutorizacion;
     private readonly ValidadorEventoDeportivo _validadorEventoDeportivo;
 
-    public EventoDeportivoAltaUseCase(IRepositorioEventoDeportivo repositorioEventoDeportivo,IRepositorioPersona repositorioPersona, IServicioAutorizacion servicioAutorizacion, ValidadorEventoDeportivo validadorEventoDeportivo)
+    public EventoDeportivoAltaUseCase(IRepositorioEventoDeportivo repositorioEventoDeportivo,IRepositorioUsuario repositorioUsuario, IServicioAutorizacion servicioAutorizacion, ValidadorEventoDeportivo validadorEventoDeportivo)
     {
         _repositorioEventoDeportivo = repositorioEventoDeportivo;
-        _repositorioPersona = repositorioPersona;
+        _repositorioUsuario = repositorioUsuario;
         _servicioAutorizacion = servicioAutorizacion;
         _validadorEventoDeportivo = validadorEventoDeportivo;
     }
@@ -26,7 +26,7 @@ public class EventoDeportivoAltaUseCase
         {
             throw new FalloAutorizacionException("El usuario no tiene permiso para crear eventos deportivos.");
         }
-        var responsable = await _repositorioPersona.ObtenerPorIDAsync(dto.ResponsableId);
+        var responsable = await _repositorioUsuario.ObtenerPorIDAsync(dto.ResponsableId);
 
         if (responsable == null)
         {
