@@ -4,12 +4,8 @@ namespace SIGU.Repositorios;
 
 public class DatabaseSqlite
 {
-    public static void Inicializar()
+    public static void Inicializar(SIGUContext context)
     {
-        using var context = new SIGUContext();
-
-        context.Database.EnsureDeleted(); // Elimina la base de datos si existe, para pruebas
-
         if (context.Database.EnsureCreated())
         {
             Console.WriteLine("Database created successfully.");
