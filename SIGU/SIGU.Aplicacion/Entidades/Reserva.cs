@@ -16,17 +16,6 @@ public class Reserva
         PersonaId = personaId;
         EventoDeportivoId = eventoDeportivoId;
     }
-    // nose si agregar el estado de reserva por defecto , o si se lo deberia setear desde el controlador
-
-    public Reserva(int personaId, int eventoDeportivoId, Estado estadoReserva)
-    {
-        if (personaId <= 0) throw new ValidacionException("El ID de la persona no debe estar vacio");
-        if (eventoDeportivoId <= 0) throw new ValidacionException("El id de Evento Deportivo no debe estar vacio");
-        if (estadoReserva == null) throw new ValidacionException("El estado de la reserva no debe estar vacio");
-        EstadoAsistencia = estadoReserva;
-        PersonaId = personaId;
-        EventoDeportivoId = eventoDeportivoId;
-    }
 
 
 }
