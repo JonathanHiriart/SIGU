@@ -1,5 +1,6 @@
 using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Entidades;
+using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
 using SIGU.Aplicacion.Validadores;
@@ -20,9 +21,10 @@ public class EventoDeportivoAltaUseCase
     }
     public async Task<EventoDeportivo> EjecutarAsync(EventoDeportivoDTO dto, Guid idUsuario)
     {
-        if (!_servicioAutorizacion.EstaAutorizado(idUsuario, Enums.Permiso.EventoAlta))
+        var estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoAlta);
+        if (!estaAutorizado)
         {
-            throw new FalloAutorizacionException("El usuario no tiene permisos para crear eventos deportivos.");
+            throw new FalloAutorizacionException("El usuario no tiene permiso para crear eventos deportivos.");
         }
         var responsable = await _repositorioPersona.ObtenerPorIDAsync(dto.ResponsableId);
 
