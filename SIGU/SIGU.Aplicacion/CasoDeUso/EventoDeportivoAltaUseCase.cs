@@ -8,7 +8,7 @@ namespace SIGU.Aplicacion.CasoDeUso;
 public class EventoDeportivoAltaUseCase
 {
     private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
-    private readonly IRepositorioPersona _repositorioPersona;
+    private readonly IRepositorioUsuario _repositorioPersona;
     private readonly IServicioAutorizacion _servicioAutorizacion;
     private readonly ValidadorEventoDeportivo _validadorEventoDeportivo;
 
