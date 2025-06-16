@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using SIGU.Repositorios;
 using SIGU.UI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//  Inyectar SIGUContext con EF Core y SQLite
+builder.Services.AddDbContext<SIGUContext>(options =>
+    options.UseSqlite("Data Source=SIGU.sqlite"));
 
 var app = builder.Build();
 
@@ -16,8 +22,6 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseAntiforgery();
-
-app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
