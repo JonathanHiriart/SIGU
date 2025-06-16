@@ -1,5 +1,4 @@
 using SIGU.Aplicacion.Entidades;
-using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
 
 namespace SIGU.Aplicacion.Validadores;
@@ -7,41 +6,71 @@ public class ValidadorReserva
 {
     private readonly IRepositorioUsuario _repositorioUsuario;
     private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
-    private readonly IRepositorioReserva _repositorioR;
-    private readonly I
+    private readonly IRepositorioReserva _repositorioReserva;
     public ValidadorReserva(IRepositorioUsuario repositorioUsuario, IRepositorioEventoDeportivo repositorioEventoDeportivo, IRepositorioReserva repositorioReserva)
     {
         _repositorioUsuario = repositorioUsuario;
         _repositorioEventoDeportivo = repositorioEventoDeportivo;
-        _repositorioR = repositorioReserva;
+        _repositorioReserva = repositorioReserva;
     }
-    public bool Validar(Reserva reserva, out string mensaje)
+    public async Task<(bool esValido, string msgError)> ValidarParaAgregarAsync(Reserva reserva)
     {
-        mensaje = "";
-        if (_repositorioUsuario.ObtenerPorIDAsync(reserva.PersonaId) == null)
+        string msgError = "";
+        if (reserva == null)
         {
-            mensaje += "El ID de la persona no existe \n";
-            throw new EntidadNotFoundException("El ID de la persona no existe");
+            msgError = "La reserva no puede ser nula.";
+            return (false, msgError);
         }
-        if (_repositorioED.ObtenerPorID(reserva.EventoDeportivoId) == null)
+        var (valido,errorComun) = await ValidarPersonaYEvento(reserva.PersonaId, reserva.EventoDeportivoId);
+        if (!valido)
         {
-            mensaje += "El ID del evento deportivo no existe \n";
-            throw new EntidadNotFoundException("El ID del evento deportivo no existe");
+            return (false, errorComun);
         }
-        if (_repositorioR.ObtenerPorPersonaYEvento(reserva.PersonaId, reserva.EventoDeportivoId) != null)
+        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.PersonaId, reserva.EventoDeportivoId);
+        if (yaReservado != null)
         {
-            mensaje += "Ya existe una reserva para esta persona en este evento deportivo \n";
+            msgError = "La persona ya tiene una reserva para este evento deportivo.";
+            return (false, msgError);
         }
-        var reservas = _repositorioR.ObtenerPorEvento(reserva.EventoDeportivoId);
-        var evento = _repositorioED.ObtenerPorID(reserva.EventoDeportivoId);
-        if (reservas.Count >= evento.CupoMaximo)
-        {
-            mensaje += "No hay cupo disponible para este evento deportivo \n";
-        }
-
-        return mensaje == "";
-
-
+        return (true, msgError);
     }
+    public async Task<(bool esValido, string msgError)> ValidarParaModificarAsync(Reserva reserva)
+    {
+        string msgError = "";
+        if (reserva == null)
+        {
+            msgError = "La reserva no puede ser nula.";
+            return (false, msgError);
+        }
+        var (valido, errorComun) = await ValidarPersonaYEvento(reserva.PersonaId, reserva.EventoDeportivoId);
+        if (!valido)
+        {
+            return (false, errorComun);
+        }
+        Reserva? yaReservado = await _repositorioReserva.ObtenerPorPersonaYEventoAsync(reserva.PersonaId, reserva.EventoDeportivoId);
+        if (yaReservado == null)
+        {
+            msgError = "La Reserva a modificar no existe.";
+            return (false, msgError);
+        }
+        return (true, msgError);
+    }
+    private async Task<(bool esValido, string msgError)> ValidarPersonaYEvento(Guid personaId, Guid eventoId)
+    {
+        if (personaId == Guid.Empty)
+            return (false, "El ID de la persona no puede ser nulo.");
 
+        var persona = await _repositorioUsuario.ObtenerPorIDAsync(personaId);
+        if (persona == null)
+            return (false, "La persona no existe.");
+
+        if (eventoId == Guid.Empty)
+            return (false, "El ID del evento deportivo no puede ser nulo.");
+
+        var evento = await _repositorioEventoDeportivo.ObtenerPorIDAsync(eventoId);
+        if (evento == null)
+            return (false, "El evento deportivo no existe.");
+
+        return (true, "");
+    }
 }
