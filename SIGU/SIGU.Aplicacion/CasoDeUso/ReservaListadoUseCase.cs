@@ -4,11 +4,11 @@ using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
 namespace SIGU.Aplicacion.CasoDeUso;
-public class UsuaruioListadoUseCase
+public class ReservaListadoUseCase 
 {
     private readonly IRepositorioReserva _repositorioReserva;
     private readonly IServicioAutorizacion _servicioAutorizacion;
-    public UsuaruioListadoUseCase(IRepositorioReserva repositorioUsuario, IServicioAutorizacion servicioAutorizacion)
+    public ReservaListadoUseCase(IRepositorioReserva repositorioUsuario, IServicioAutorizacion servicioAutorizacion)
     {
         _repositorioReserva = repositorioUsuario;
         _servicioAutorizacion = servicioAutorizacion;

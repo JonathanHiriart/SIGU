@@ -1,3 +1,4 @@
+using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
@@ -13,9 +14,9 @@ public class EventoDeportivoListadoUseCase
         _servicioAutorizacion = servicioAutorizacion;
         _repositorioEventoDeportivo = repositorioEventoDeportivo;
     }
-    public async Task<List<EventoDeportivo>> EjecutarAsync(Guid idUsuario)
+    public async Task<List<EventoDeportivoDTO>> EjecutarAsync(Guid idUsuario)
     {
-        var estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoListar);
+        bool estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoListar);
         if (!estaAutorizado)
         {
             throw new FalloAutorizacionException("El usuario no tiene permiso para listar Eventos deportivos.");
@@ -26,13 +27,24 @@ public class EventoDeportivoListadoUseCase
             throw new ValidacionException("No se encontraron eventos deportivos.");
         }
         List<EventoDeportivo> listaEventosFiltrada = new List<EventoDeportivo>();
-        foreach (var evento in ListaEventos)
-        {
-            if (evento.FechaHoraInicio > DateTime.Now)
-            {
-                listaEventosFiltrada.Add(evento);
-            }
-        }
-        return listaEventosFiltrada;
+        //foreach (var evento in ListaEventos)
+        //{
+        //    if (evento.FechaHoraInicio > DateTime.Now)
+        //    {
+        //        listaEventosFiltrada.Add(evento);
+        //    }
+        //}
+        var listaEventosDTO = ListaEventos.Where(e => e.FechaHoraInicio > DateTime.Now)
+            .Select(e => new EventoDeportivoDTO
+          {
+              Nombre = e.Nombre ?? "",
+              Descripcion = e.Descripcion ?? "",
+              FechaHoraInicio = e.FechaHoraInicio,
+              DuracionHoras = e.DuracionHoras,
+              CupoMaximo = e.CupoMaximo,
+              ResponsableId = e.ResponsbleID
+          })
+          .ToList();
+        return listaEventosDTO;
     }
 }

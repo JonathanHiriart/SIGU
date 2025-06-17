@@ -4,7 +4,7 @@ public class Usuario
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Nombre { get; private set; } = "";
-    public int DNI { get; private set; } = "";
+    public int DNI { get; private set; }
     public string Apellido { get; private set; } = "";
     public string Email { get; private set; } = "";
     public string Telefono { get; private set; } = "";
