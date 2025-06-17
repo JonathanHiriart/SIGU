@@ -1,6 +1,4 @@
 using SIGU.Aplicacion.Enums;
-using System.Net;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace SIGU.Aplicacion.Entidades;
 public class Reserva
 {

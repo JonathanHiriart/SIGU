@@ -21,9 +21,9 @@ public class ValidadorUsuario
         {
             return (false, errorComun);
         }
-        if (string.IsNullOrEmpty(usuario.DNI))
+        if (usuario.DNI!= 0)
         {
-            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDni(usuario.DNI);
+            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDniAsync(usuario.DNI);
             if (existentePorDni != null)
             {
                 string msgError = "El DNI ya existe.";
@@ -32,7 +32,7 @@ public class ValidadorUsuario
         }
         if (!string.IsNullOrWhiteSpace(usuario.Email))
         {
-            Usuario? existentePorEmail = await _repositorioUsuario.obtenerPorEmail(usuario.Email);
+            Usuario? existentePorEmail = await _repositorioUsuario.obtenerPorEmailAsync(usuario.Email);
             if (existentePorEmail != null)
             {
                 string msgError = "El email ya existe.";
@@ -48,9 +48,9 @@ public class ValidadorUsuario
         {
             return (false, errorComun);
         }
-        if (string.IsNullOrEmpty(usuario.DNI))
+        if (usuario.DNI <= 0)
         {
-            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDni(usuario.DNI);
+            Usuario? existentePorDni = await _repositorioUsuario.obtenerPorDniAsync(usuario.DNI);
             if (existentePorDni ==null)
             {
                 string msgError = "El DNI no existe";
@@ -76,7 +76,7 @@ public class ValidadorUsuario
             string msgError = "El apellido no puede ser nulo ni estar vacío.";
             return (false, msgError);
         }
-        if (string.IsNullOrEmpty(usuario.DNI))
+        if (usuario.DNI <= 0)
         {
             string msgError = "El DNI no puede ser nulo ni estar vacío.";
             return (false, msgError);
