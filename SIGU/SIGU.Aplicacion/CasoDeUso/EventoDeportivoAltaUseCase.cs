@@ -4,7 +4,6 @@ using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
 using SIGU.Aplicacion.Validadores;
-using System.Net.WebSockets;
 namespace SIGU.Aplicacion.CasoDeUso;
 public class EventoDeportivoAltaUseCase
 {
