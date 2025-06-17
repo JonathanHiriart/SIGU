@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace SIGU.Repositorios;
 
 public class SIGUContext : DbContext
@@ -12,10 +13,6 @@ public class SIGUContext : DbContext
 	public DbSet<Reserva> Reserva { get; set; }
 	public DbSet<EventoDeportivo> EventoDeportivo { get; set; }
 	#nullable restore
-	//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { 
-	//	optionsBuilder.UseSqlite("Data Source=SIGU.sqlite");
- //   }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Usuario → Reservas (1:N)
@@ -47,8 +44,15 @@ public class SIGUContext : DbContext
                           .ToList()
             );
 
-            modelBuilder.Entity<Usuario>()
-                .Property(u => u.Permisos)
-                .HasConversion(permisosConverter);
+        var permisosComparer = new ValueComparer<List<Permiso>>(
+            (c1, c2) => (c1 ?? new List<Permiso>()).SequenceEqual(c2 ?? new List<Permiso>()),
+            c => (c ?? new List<Permiso>()).Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+            c => c == null ? new List<Permiso>() : c.ToList()
+        );
+
+        modelBuilder.Entity<Usuario>()
+            .Property(u => u.Permisos)
+            .HasConversion(permisosConverter)
+            .Metadata.SetValueComparer(permisosComparer);
     }
 }
