@@ -11,4 +11,12 @@ public class Reserva
     public Usuario Usuario { get; set; } = null!;
     protected Reserva() { }
 
+    public Reserva(Guid usuarioId, Guid eventoDeportivoId)
+    {
+        if (usuarioId == Guid.Empty) throw new ArgumentException("El ID del usuario no puede ser nulo.");
+        if (eventoDeportivoId == Guid.Empty) throw new ArgumentException("El ID del evento deportivo no puede ser nulo.");
+        this.usuarioID = usuarioId;
+        this.EventoDeportivoId = eventoDeportivoId;
+    }
+
 }

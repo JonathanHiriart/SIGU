@@ -2,7 +2,6 @@
 using SIGU.Aplicacion.Enums;   
 using SIGU.Aplicacion.Interfaces;
 using SIGU.Aplicacion.Excepciones;
-using System.Threading.Tasks;
 namespace SIGU.Aplicacion.Servicios;
 
 public class ServicioAutorizacion : IServicioAutorizacion
