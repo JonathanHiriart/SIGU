@@ -36,7 +36,7 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
         await db.SaveChangesAsync();
     }
 
-    public async Task<Usuario> obtenerPorDni(int dni) {
+    public async Task<Usuario> obtenerPorDniAsync(int dni) {
         var usuario = await db.Usuario.FirstOrDefaultAsync(u => u.DNI == dni);
         if (usuario == null) { 
             return null!; 
@@ -44,7 +44,7 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
         return usuario;
     }
 
-    public async Task<Usuario> obtenerPorEmail(string email) {
+    public async Task<Usuario> obtenerPorEmailAsync(string email) {
         var usuario = await db.Usuario.FirstOrDefaultAsync(u => u.Email == email);
         if (usuario == null) { 
             return null!; 
