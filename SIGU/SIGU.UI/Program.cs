@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using SIGU.Repositorios;
-using SIGU.UI.Components;
+using SIGU.Aplicacion.CasoDeUso;
 using SIGU.Aplicacion.Interfaces;
 using SIGU.Aplicacion.Servicios;
 using SIGU.Aplicacion.Validadores;
-using SIGU.Aplicacion.CasoDeUso;
+using SIGU.Repositorios;
+using SIGU.Repositorios.reserva;
+using SIGU.UI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<SIGUContext>(options =>
 builder.Services.AddScoped<IServicioAutorizacion,ServicioAutorizacion>();
 builder.Services.AddScoped<IRepositorioUsuario,RepositorioUsuario>();
 builder.Services.AddScoped<IRepositorioEventoDeportivo,RepositorioEventoDeportivo>();
-builder.Services.AddScoped<IRepositorioReserva,RepositorioReserva>();
+builder.Services.AddScoped<IRepositorioReserva, RepositorioReserva>();
 builder.Services.AddScoped<IHasheador,Hasheador>();
 builder.Services.AddScoped<ValidadorEventoDeportivo>();
 builder.Services.AddScoped<ValidadorReserva>();
@@ -41,7 +42,7 @@ builder.Services.AddScoped<EventoDeportivoModificacionUseCase>();
 // Reservas
 builder.Services.AddScoped<ReservaAltaUseCase>();
 builder.Services.AddScoped<ReservaBajaUseCase>();
-builder.Services.AddScoped<Reserva>();
+builder.Services.AddScoped<ReservaListadoUseCase>();
 builder.Services.AddScoped<ReservaModificacionUseCase>();
 var app = builder.Build();
 
