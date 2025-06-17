@@ -7,7 +7,7 @@ namespace SIGU.Aplicacion.Servicios;
 public class ServicioAutorizacion : IServicioAutorizacion
 {
     private readonly IRepositorioUsuario _repositorioUsuario;
-    public ServicioAutorizacion(IServicioAutorizacion servicioAutorizacion, IRepositorioUsuario repositorioUsuario)
+    public ServicioAutorizacion(IRepositorioUsuario repositorioUsuario)
     {
         _repositorioUsuario= repositorioUsuario;
     }
