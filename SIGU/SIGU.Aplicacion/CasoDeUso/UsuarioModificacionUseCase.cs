@@ -3,7 +3,6 @@ using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
 using SIGU.Aplicacion.Excepciones;
 using SIGU.Aplicacion.Interfaces;
-using SIGU.Aplicacion.Servicios;
 using SIGU.Aplicacion.Validadores;
 
 namespace SIGU.Aplicacion.CasoDeUso;
