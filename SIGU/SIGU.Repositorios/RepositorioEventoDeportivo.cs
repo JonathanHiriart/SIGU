@@ -15,14 +15,9 @@ public class RepositorioEventoDeportivo(SIGUContext db) : IRepositorioEventoDepo
         return eventos;
     }
 
-    public async Task<EventoDeportivo> obtenerPorIDAsync(Guid id) 
-    { 
-        var evento = await db.EventoDeportivo.FindAsync(id);
-        if (evento == null) 
-        { 
-            return null!;
-        }
-        return evento;
+    public async Task<EventoDeportivo?> obtenerPorIDAsync(Guid id) 
+    {
+        return await db.EventoDeportivo.FindAsync(id);
     }
 
     public async Task AgregarAsync(EventoDeportivo evento) { 
@@ -55,16 +50,8 @@ public class RepositorioEventoDeportivo(SIGUContext db) : IRepositorioEventoDepo
         await db.SaveChangesAsync();
     }
 
-    public async Task<EventoDeportivo> ObtenerPorIDAsync(Guid id) {
-        var evento = await db.EventoDeportivo.FindAsync(id);
-        if(evento == null) { 
-            return null!;
-        }else { 
-            return evento;
-        }
-
-
-
-
-
+    public async Task<EventoDeportivo?> ObtenerPorIDAsync(Guid id)
+    {
+        return await db.EventoDeportivo.FindAsync(id);
+    }
 }
