@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
-using Microsoft.EntityFrameworkCore.ChangeTracking; // Asegúrate de tener este using
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace SIGU.Repositorios;
 
 public class SIGUContext : DbContext
