@@ -1,10 +1,8 @@
 @page "/"  
-@using Microsoft.AspNetCore.Components.Authorization  
 @rendermode InteractiveServer  
 @inject LoginUseCase loginUseCase  
 @inject UsuarioServicioLogin usuarioServicioLogin  
 @inject NavigationManager nav  
-@inject AuthenticationStateProvider authProvider  
 <PageTitle>Login/Register</PageTitle>    
 
 <h1>Login</h1>    
@@ -12,7 +10,7 @@
 <input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />  
 <button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>    
 
-@code {  
+@code {
     UsuarioLoginDTO user = new UsuarioLoginDTO();  
     string _mensajeError = string.Empty;    
 
@@ -30,14 +28,7 @@
             if (usuario!=null)    
             {    
                 usuarioServicioLogin.SetUser(usuario);  
-
-                // Notifica al AuthenticationStateProvider  
-                if (authProvider is CustomAuthenticationStateProvider customAuth)  
-                {  
-                    customAuth.SetUser(usuario);  
-                }  
-
-                nav.NavigateTo("/Home");  
+                nav.NavigateTo("/Home");
                 Console.WriteLine("Logueado con exito");  
             }    
             else    

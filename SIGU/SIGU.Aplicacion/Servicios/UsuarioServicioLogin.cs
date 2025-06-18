@@ -16,8 +16,10 @@ public class UsuarioServicioLogin
 		_usuario = user;
 		_logueado = true;
     }
-
-	public Usuario GetUser() {
+	public bool IsLogueado() {
+		return _logueado;
+	}
+    public Usuario GetUser() {
         if (!_logueado || _usuario == null)
             throw new InvalidOperationException("No hay un usuario logueado.");
         return _usuario;
