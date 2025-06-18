@@ -86,7 +86,7 @@
     {
         try
         {
-            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.GetUser().Id);
+            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());
             mensaje = "Usuario agregado correctamente.";
             Console.WriteLine("Usuario agregado correctamente.");
             usuarioNuevo = new UsuarioDTO();

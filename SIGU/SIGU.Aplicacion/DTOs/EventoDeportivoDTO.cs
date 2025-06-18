@@ -5,6 +5,8 @@ namespace SIGU.Aplicacion.DTOs
 {
 	public class EventoDeportivoDTO
 	{
+		[Required(ErrorMessage = "El Id es obligatorio.")]
+        public Guid Id { get; set; } 
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         public string Nombre { get; set; } = "";
 		[Required(ErrorMessage = "La descripcion es obligatoria.")]

@@ -1,0 +1,64 @@
+@page "/ListadoReservas"
+@rendermode InteractiveServer
+@inject ReservaListadoUseCase reservaListadoUseCase
+@inject UsuarioServicioLogin UsuarioServicioLogin
+
+<PageTitle>Listado de Reservas</PageTitle>
+
+<h1>Listado de Reservas</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Responsable ID</th>
+                <th>ID evento</th>
+                <th>Asistencia</th>
+                <th>Fecha Alta</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (reservas != null && reservas.Any())
+            {
+                foreach (var reserva in reservas)
+                {
+                    <tr>
+                        <td>@reserva.Id</td>
+                        <td>@reserva.PersonaId</td>
+                        <td>@reserva.EventoDeportivoId</td>
+                        <td>@reserva.EstadoAsistencia</td>
+                        <td>@reserva.FechaAlta</td>
+                        <td>
+                            <button class="btn btn-primary">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">No hay reservas disponibles.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @code {
+        List<ReservaDTO> reservas = new List<ReservaDTO>();
+        
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var usuarioActual = UsuarioServicioLogin.GetUser();
+                reservas = await reservaListadoUseCase.Ejecutar(usuarioActual.Id);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+                Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
+            }
+
+    
+        }
+    }

@@ -35,11 +35,13 @@ builder.Services.AddScoped<UsuarioListadoUseCase>();
 builder.Services.AddScoped<UsuarioModificacionUseCase>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<RegisterUseCase>();
+builder.Services.AddScoped<ListarAsistenciaAEventoUseCase>();
 // Eventos Deportivos
 builder.Services.AddScoped<EventoDeportivoAltaUseCase>();
 builder.Services.AddScoped<EventoDeportivoBajaUseCase>();
 builder.Services.AddScoped<EventoDeportivoListadoUseCase>();
 builder.Services.AddScoped<EventoDeportivoModificacionUseCase>();
+builder.Services.AddScoped<ListarEventosConCupoDisponibleUseCase>();
 // Reservas
 builder.Services.AddScoped<ReservaAltaUseCase>();
 builder.Services.AddScoped<ReservaBajaUseCase>();

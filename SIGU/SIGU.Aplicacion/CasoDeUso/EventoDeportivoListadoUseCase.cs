@@ -27,9 +27,9 @@ public class EventoDeportivoListadoUseCase
             throw new ValidacionException("No se encontraron eventos deportivos.");
         }
         List<EventoDeportivo> listaEventosFiltrada = new List<EventoDeportivo>();
-        var listaEventosDTO = ListaEventos.Where(e => e.FechaHoraInicio > DateTime.Now)
-            .Select(e => new EventoDeportivoDTO
+        var listaEventosDTO = ListaEventos.Select(e => new EventoDeportivoDTO
           {
+              Id = e.Id,
               Nombre = e.Nombre ?? "",
               Descripcion = e.Descripcion ?? "",
               FechaHoraInicio = e.FechaHoraInicio,
