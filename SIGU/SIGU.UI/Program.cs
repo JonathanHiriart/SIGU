@@ -27,7 +27,7 @@ builder.Services.AddScoped<IHasheador,Hasheador>();
 builder.Services.AddScoped<ValidadorEventoDeportivo>();
 builder.Services.AddScoped<ValidadorReserva>();
 builder.Services.AddScoped<ValidadorUsuario>();
-builder.Services.AddScoped<UsuarioServicioLogin>();
+builder.Services.AddSingleton<UsuarioServicioLogin>();
 //Usuarios
 builder.Services.AddScoped<UsuarioAltaUseCase>();
 builder.Services.AddScoped<UsuarioBajaUseCase>();
