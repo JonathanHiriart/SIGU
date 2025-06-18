@@ -1,0 +1,63 @@
+﻿@page "/ListadoUsuarios"
+@rendermode InteractiveServer
+@inject IRepositorioUsuario RepositorioUsuario
+@inject UsuarioListadoUseCase UsuarioListadoUseCase
+@inject UsuarioServicioLogin UsuarioServicioLogin
+
+<PageTitle>Listado de Usuarios</PageTitle>
+
+<h1>Listado de Usuarios</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (usuarios != null && usuarios.Any())
+            {
+                foreach (var usuario in usuarios)
+                {
+                    <tr>
+                        <td>@usuario.Nombre</td>
+                        <td>@usuario.Apellido</td>
+                        <td>@usuario.DNI</td>
+                        <td>@usuario.Email</td>
+                        <td>@usuario.Telefono</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">No hay usuarios disponibles.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @code {
+        List<UsuarioDTO> usuarios = new List<UsuarioDTO>();
+        
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var usuarioActual = UsuarioServicioLogin.GetUser();
+                usuarios = await UsuarioListadoUseCase.Ejecutar(usuarioActual.Id);
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+                Console.WriteLine($"Error al cargar los usuarios: {ex.Message}");
+            }
+
+    
+        }
+    }
