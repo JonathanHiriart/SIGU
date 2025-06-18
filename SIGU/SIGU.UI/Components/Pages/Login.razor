@@ -9,11 +9,15 @@
 <input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />  
 <input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />  
 <button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>    
-
+<button class="btn btn-primary mb-2" @onclick="redirigir">Nuevo usuario?</button>
 @code {
     UsuarioLoginDTO user = new UsuarioLoginDTO();  
     string _mensajeError = string.Empty;    
 
+    void redirigir()    
+    {    
+        nav.NavigateTo("/Registrarse");    
+    }
     async Task Iniciar()    
     {  
         Console.WriteLine("Iniciando sesión...");  
