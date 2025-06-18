@@ -18,12 +18,11 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
 
     public async Task<Usuario?> ObtenerPorIDAsync(Guid id)
     {
-        // como la base de datos es sqlite, no se puede usar Guid directamente en la consulta
-        // por lo tanto, se convierte a string para buscarlo
-        var idString = id.ToString();
-        var usuario = await db.Usuario.FirstOrDefaultAsync(u => u.Id.ToString() == idString);
-        if(usuario == null) 
-        { 
+        // Como la base de datos es SQLite, no se puede usar Guid directamente en la consulta.
+        // Por lo tanto, se convierte a string para buscarlo.
+        var usuario = await db.Usuario.FindAsync(id);
+        if (usuario == null)
+        {
             Console.WriteLine($"Usuario con ID {id} no encontrado.");
             return null!;
         }

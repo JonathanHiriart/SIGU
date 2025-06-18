@@ -53,20 +53,21 @@ else
     UsuarioDTO usuarioNuevo = new UsuarioDTO();  
     string mensaje = string.Empty;  
     bool tienePermiso = false;  
-    bool cargando = true;  
+    bool cargando = true;
+    Usuario actual = null!;
 
     protected override async Task OnInitializedAsync()  
     {  
 
         try  
-        {  
-            Usuario usuarioActual = await Task.Run(() => usuarioServicioLogin.GetUser());  
-            if (usuarioActual == null)  
+        {
+            actual = usuarioServicioLogin.GetUser();
+            if (actual == null)  
             {  
                 nav.NavigateTo("/");  
                 return;  
             }  
-            tienePermiso = usuarioActual.Permisos.Contains(Permiso.UsuarioAlta);  
+            tienePermiso = actual.Permisos.Contains(Permiso.UsuarioAlta);  
         }  
         catch (Exception ex)  
         {  
@@ -82,7 +83,7 @@ else
         Console.WriteLine("Agregando usuario...");
         try  
         {  
-            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());  
+            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo,actual.Id);  
             Console.WriteLine("Usuario agregado correctamente.");  
             usuarioNuevo = new UsuarioDTO();  
         }  
