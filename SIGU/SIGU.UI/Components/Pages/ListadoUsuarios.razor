@@ -1,4 +1,5 @@
 ﻿@page "/ListadoUsuarios"  
+@using SIGU.Aplicacion.Enums
 @rendermode InteractiveServer  
 @inject IRepositorioUsuario RepositorioUsuario  
 @inject UsuarioListadoUseCase UsuarioListadoUseCase  
@@ -7,56 +8,75 @@
 
 <PageTitle>Listado de Usuarios</PageTitle>  
 
-<h1>Listado de Usuarios</h1>  
-<table class="table">  
-    <thead>  
-        <tr>  
-            <th>ID</th>  
-            <th>Nombre</th>  
-            <th>Apellido</th>  
-            <th>DNI</th>  
-            <th>Email</th>  
-            <th>Telefono</th>  
-            <th>Acciones</th>  
-        </tr>  
-    </thead>  
-    <tbody>  
-        @if (usuarios != null && usuarios.Any())  
-        {  
-            foreach (var usuario in usuarios)  
-            {  
-                <tr>  
-                    <td class="centrar-texto">@usuario.ID</td>  
-                    <td class="centrar-texto">@usuario.Nombre</td>  
-                    <td class="centrar-texto">@usuario.Apellido</td>  
-                    <td class="centrar-texto">@usuario.DNI</td>  
-                    <td class="centrar-texto">@usuario.Email</td>  
-                    <td class="centrar-texto">@usuario.Telefono</td>  
-                    <td>  
-                        <button class="btn btn-primary" @onclick="() => ModificarUsuario(usuario.ID)">Editar</button>  
-                        <button class="btn btn-danger">Eliminar</button>  
-                    </td>  
-                </tr>  
-            }  
-        }  
-        else  
-        {  
-            <tr>  
-                <td colspan="10">No hay usuarios disponibles.</td>  
-            </tr>  
-        }  
-    </tbody>  
-</table>  
+@if (!logueado)
+{
+      <div class="alert alert-danger">Para ver el el listado de usuarios es necesario iniciar sesión.</div>  
+}  
+else  
+{
+    <h1>Listado de Usuarios</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (usuarios != null && usuarios.Any())
+            {
+                foreach (var usuario in usuarios)
+                {
+                    <tr>
+                        <td class="centrar-texto">@usuario.ID</td>
+                        <td class="centrar-texto">@usuario.Nombre</td>
+                        <td class="centrar-texto">@usuario.Apellido</td>
+                        <td class="centrar-texto">@usuario.DNI</td>
+                        <td class="centrar-texto">@usuario.Email</td>
+                        <td class="centrar-texto">@usuario.Telefono</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => ModificarUsuario(usuario.ID)">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10">No hay usuarios disponibles.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-@code {  
+}
+
+@code {
     List<UsuarioDTO> usuarios = new List<UsuarioDTO>();  
-
+    private bool tienePermiso = false;
+    private bool logueado;
     protected override async Task OnInitializedAsync()  
     {  
         try  
         {  
-            var usuarioActual = UsuarioServicioLogin.GetUser();  
-            usuarios = await UsuarioListadoUseCase.Ejecutar();  
+            var usuarioActual = UsuarioServicioLogin.GetUser(); 
+            logueado = UsuarioServicioLogin.IsLogueado();
+            if (!logueado)
+            {
+                navegador.NavigateTo("/");
+                return;
+            }
+  
+            usuarios = await UsuarioListadoUseCase.Ejecutar();
+       
+            
+            
         }  
         catch (Exception ex)  
         {  
