@@ -35,6 +35,7 @@ builder.Services.AddScoped<UsuarioModificacionUseCase>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<RegisterUseCase>();
 builder.Services.AddScoped<ListarAsistenciaAEventoUseCase>();
+builder.Services.AddScoped<ModificarPerfilPropioUseCase>();
 // Eventos Deportivos
 builder.Services.AddScoped<EventoDeportivoAltaUseCase>();
 builder.Services.AddScoped<EventoDeportivoBajaUseCase>();
