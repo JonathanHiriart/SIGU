@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.Enums;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 namespace SIGU.Repositorios;
 
 public class SIGUContext : DbContext
@@ -50,7 +50,12 @@ public class SIGUContext : DbContext
                       .Select(s => Enum.Parse<Permiso>(s))
                       .ToList()
         );
-
+        // Comparer para comparar listas de permisos 
+        var permisosComparer = new ValueComparer<List<Permiso>>(
+            (c1, c2) => (c1 ?? new List<Permiso>()).SequenceEqual(c2 ?? new List<Permiso>()),
+            c => (c ?? new List<Permiso>()).Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+            c => c == null ? new List<Permiso>() : c.ToList()
+        );
         modelBuilder.Entity<Usuario>()
             .Property(u => u.Permisos)
             .HasConversion(permisosConverter);

@@ -13,9 +13,12 @@ public class ServicioAutorizacion : IServicioAutorizacion
     }
     public async Task<bool> EstaAutorizado(Guid idUsuario, Permiso permiso)
     {
+        Console.WriteLine("entre a servicio autorizacion");
         if(idUsuario== Guid.Empty)
         {
+            Console.WriteLine("id invalido");
             throw new EntidadNotFoundException("El ID de usuario no puede ser un GUID vacío.");
+
         }
         if(!Enum.IsDefined(typeof(Permiso), permiso))
         {
@@ -26,7 +29,7 @@ public class ServicioAutorizacion : IServicioAutorizacion
         {
             throw new EntidadNotFoundException($"No se encontró un usuario con el ID.");
         }
-        if (! usuario.Permisos.Contains(permiso))
+        if (!usuario.Permisos.Contains(permiso))
         {
             throw new ValidacionException($"El usuario no tiene el permiso {permiso}.");
         }

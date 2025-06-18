@@ -34,7 +34,28 @@ public class UsuarioModificacionUseCase
             throw new EntidadNotFoundException("El usuario a eliminar no existe");
         }
         // 3. Validar datos del usuario modificado
+		if (string.IsNullOrWhiteSpace(usuarioModificado.Contrasenia))
+		{
+			throw new ValidacionException("La contrasenia no puede estar vacia");
+        }
         usuarioModificado.Contrasenia = _hasheador.Hashear(usuarioModificado.Contrasenia);
+        // Validación adicional para evitar argumentos nulos
+        if (string.IsNullOrEmpty(usuarioModificado.Nombre))
+        {
+            throw new ValidacionException("El nombre no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioModificado.Apellido))
+        {
+            throw new ValidacionException("El apellido no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioModificado.Email))
+        {
+            throw new ValidacionException("El email no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioModificado.Telefono))
+        {
+            throw new ValidacionException("El teléfono no puede ser nulo o vacío.");
+        }
         Usuario? usuarioModificar = new Usuario(usuarioModificado.Nombre, usuarioModificado.Apellido, usuarioModificado.DNI, usuarioModificado.Email, usuarioModificado.Telefono, usuarioModificado.Contrasenia);
 		var (esValido, msgError) = await _validadorUsuario.ValidarParaModificarAsync(usuarioModificar);
 		if (!esValido)
