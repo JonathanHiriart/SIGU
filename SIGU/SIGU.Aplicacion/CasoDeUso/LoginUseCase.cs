@@ -11,7 +11,7 @@ public class LoginUseCase
         _repositorioUsuario= repositorioUsuario;
         _hasheador = hasheador;
     }
-    public async Task<bool> EjecutarAsync(string email, string password)
+    public async Task<bool>IniciarSesion(string email, string password)
     {
         Usuario? usuario = await _repositorioUsuario.obtenerPorEmailAsync(email);
         if (usuario == null)

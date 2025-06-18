@@ -1,19 +1,44 @@
-@page "/Login"
+@page "/"
+@using SIGU.UI.Components.Shared
+@layout EmptyLayout
 @rendermode InteractiveServer
+@inject LoginUseCase loginUseCase
+@inject UsuarioServicioLogin usuarioServicioLogin
+@inject NavigationManager nav
+<PageTitle>Login/Register</PageTitle>  
 
-<PageTitle>Login/Register</PageTitle>
-
-<h1>Counter</h1>
-
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<h1>Login</h1>  
+<input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />
+<input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />
+<button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>  
 
 @code {
-    private int currentCount = 0;
+    UsuarioLoginDTO user = new UsuarioLoginDTO();
+    string _mensajeError = string.Empty;  
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
+    async Task Iniciar()  
+    {  
+        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))  
+        {  
+            _mensajeError = "Email y contraseña son obligatorios.";  
+            return;  
+        }  
+        try  
+        {  
+            var loginExitoso = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);  
+            if (loginExitoso)  
+            {  
+                nav.NavigateTo("/Home");
+                usuarioServicioLogin.Logueado();  
+            }  
+            else  
+            {  
+                _mensajeError = "Email o contraseña incorrectos.";  
+            }  
+        }  
+        catch (Exception ex)  
+        {  
+            _mensajeError = $"Error al iniciar sesión: {ex.Message}";  
+        }  
+    }  
 }
