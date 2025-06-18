@@ -19,8 +19,30 @@ public class RegisterUseCase
     {
         // este caso de uso se encarga de registrar un nuevo usuario en el sistema sin permisos especiales
         // Hashear la contraseña
+        if(string.IsNullOrEmpty(usuarioNuevo.Contrasenia))
+        {
+            throw new ValidacionException("La contraseña no puede ser nula o vacía.");
+        }
         usuarioNuevo.Contrasenia = _hasheador.Hashear(usuarioNuevo.Contrasenia);
-        
+
+        // Validación adicional para evitar argumentos nulos
+        if (string.IsNullOrEmpty(usuarioNuevo.Nombre))
+        {
+            throw new ArgumentException("El nombre no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioNuevo.Apellido))
+        {
+            throw new ArgumentException("El apellido no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioNuevo.Email))
+        {
+            throw new ArgumentException("El email no puede ser nulo o vacío.");
+        }
+        if (string.IsNullOrEmpty(usuarioNuevo.Telefono))
+        {
+            throw new ArgumentException("El teléfono no puede ser nulo o vacío.");
+        }
+        // Crear una instancia de Usuario a partir del DTO
         Usuario? usuario = new Usuario(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.DNI, usuarioNuevo.Email, usuarioNuevo.Telefono, usuarioNuevo.Contrasenia);
         var (esValido, msgError) = await _validadorUsuario.ValidarParaAgregarAsync(usuario);
         if (!esValido)

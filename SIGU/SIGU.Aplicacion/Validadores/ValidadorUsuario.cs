@@ -4,15 +4,11 @@ namespace SIGU.Aplicacion.Validadores;
 
 public class ValidadorUsuario
 {
-    private readonly IRepositorioUsuario _repositorioUsuario;
-    private readonly IRepositorioEventoDeportivo _repositorioEventoDeportivo;
-    private readonly IRepositorioReserva _repositorioReserva;   
+    private readonly IRepositorioUsuario _repositorioUsuario;  
 
-    public ValidadorUsuario(IRepositorioUsuario repositorioUsuario, IRepositorioEventoDeportivo repositorioEventoDeportivo, IRepositorioReserva repositorioReserva)
+    public ValidadorUsuario(IRepositorioUsuario repositorioUsuario)
     {
         _repositorioUsuario = repositorioUsuario;
-        _repositorioEventoDeportivo = repositorioEventoDeportivo;
-        _repositorioReserva = repositorioReserva;
     }
     public async Task<(bool esValido, string msgError)> ValidarParaAgregarAsync(Usuario usuario)
     {

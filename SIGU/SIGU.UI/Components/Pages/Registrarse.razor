@@ -1,0 +1,54 @@
+@page "/Registrarse"  
+@rendermode InteractiveServer  
+@inject RegisterUseCase registerUseCase
+@inject NavigationManager nav  
+<PageTitle>Registrarse</PageTitle>  
+<h3>Registrese</h3>  
+<p>Completa los siguientes campos para completar el registro:</p>  
+<label class="form-label">Nombre  
+    <input @bind="reg.Nombre" class="form-control mb-2" placeholder="Nombre" />  
+</label>  
+<label class="col-form-label">  
+    Apellido  
+    <input @bind="reg.Apellido" class="form-control mb-2" placeholder="Apellido" />  
+</label>  
+<label class="col-form-label">  
+    DNI  
+    <input @bind="reg.DNI" class="form-control mb-2" placeholder="DNI" />  
+</label>  
+<label class="col-form-label">  
+    Email  
+    <input @bind="reg.Email" class="form-control mb-2" placeholder="Correo Electrónico" />  
+</label>  
+<label class="col-form-label">  
+    Telefóno  
+    <input @bind="reg.Telefono" class="form-control mb-2" placeholder="Teléfono" />  
+</label>  
+<label class="col-form-label">  
+    Contraseña  
+    <input @bind="reg.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
+</label>  
+<button class="btn btn-primary mb-2" @onclick="Registrase">Regitrarse</button>
+@code {
+    UsuarioDTO reg = new UsuarioDTO();  
+    string _mensajeError = string.Empty;  
+
+    async Task Registrase()
+    {
+        try
+        {
+            await registerUseCase.EjecutarAsync(reg);
+        }
+        catch (Exception ex)
+        {
+            _mensajeError = ex.Message;
+        }
+        finally
+        {
+            if (string.IsNullOrEmpty(_mensajeError))
+            {
+                nav.NavigateTo("/");
+            }
+        }
+    }  
+}
