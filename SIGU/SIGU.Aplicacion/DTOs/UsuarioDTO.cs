@@ -4,6 +4,7 @@ namespace SIGU.Aplicacion.DTOs;
 
 public class UsuarioDTO
 {
+    public Guid ID { get; set; } = Guid.Empty;
     [Required(ErrorMessage = "El nombre es obligatorio.")]
     public string Nombre { get; set; } = string.Empty;
 

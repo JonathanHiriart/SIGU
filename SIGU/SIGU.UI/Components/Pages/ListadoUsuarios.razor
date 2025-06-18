@@ -25,11 +25,16 @@
                 foreach (var usuario in usuarios)
                 {
                     <tr>
-                        <td>@usuario.Nombre</td>
-                        <td>@usuario.Apellido</td>
-                        <td>@usuario.DNI</td>
-                        <td>@usuario.Email</td>
-                        <td>@usuario.Telefono</td>
+                        <td class="centrar-texto">@usuario.ID</td>
+                        <td class="centrar-texto">@usuario.Nombre</td>
+                        <td class="centrar-texto">@usuario.Apellido</td>
+                        <td class="centrar-texto">@usuario.DNI</td>
+                        <td class="centrar-texto">@usuario.Email</td>
+                        <td class="centrar-texto">@usuario.Telefono</td>
+                        <td>
+                            <button class="btn btn-primary">Editar</button>
+                            <button class="btn btn-danger">Eliminar</button>
+                        </td>
                     </tr>
                 }
             }

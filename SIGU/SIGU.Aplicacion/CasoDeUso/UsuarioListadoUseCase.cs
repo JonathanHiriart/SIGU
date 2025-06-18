@@ -28,6 +28,7 @@ public class UsuarioListadoUseCase
         // Listando con el DTO Evitamos exponer la entidad Usuario directamente
         var usuariosDTO = usuarios.Select(u => new UsuarioDTO
         {
+            ID = u.Id,
             Nombre = u.Nombre,
             Apellido = u.Apellido,
             DNI = u.DNI,
