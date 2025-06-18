@@ -1,72 +1,95 @@
-@page "/usuario/{Id:Guid?}"
+@page "/usuario/{Id?}"
 @rendermode InteractiveServer
+
 @inject UsuarioServicioLogin UsuarioServicioLogin
 @inject IRepositorioUsuario repositorioUsuario
 @inject UsuarioModificacionUseCase UsuarioModificacionUseCase
 @inject NavigationManager Navegador
 @inject UsuarioAltaUseCase UsuarioAltaUseCase
 
-@if(_esNuevoUsuario){
+@if (_errorDeId)
+{
+    <div class="alert alert-danger">El ID proporcionado no es válido.</div>
+}
+else if (_esNuevoUsuario)
+{
     <h3>Agregando un nuevo usuario</h3>
-}else{
+}
+else
+{
     <h3>Modificando al usuario "@_usuario.Nombre"</h3>
 }
 
-<input placeholder="Nombre" @bind="_usuario.Nombre" class="form-control">
-<input placeholder="Apellido" @bind="_usuario.Apellido" class="form-control">
-<button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
+@if (!_errorDeId)
+{
+    <input placeholder="Nombre" @bind="_usuario.Nombre" class="form-control" />
+    <input placeholder="Apellido" @bind="_usuario.Apellido" class="form-control" />
+    <input placeholder="Email" @bind="_usuario.Email" class="form-control" />
+    <input placeholder="Telefono" @bind="_usuario.Telefono" class="form-control" />
+    <input placeholder="Contraseña" @bind="_usuario.Contrasenia" class="form-control" />
+    <button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
+    <button @onclick="@(() => Console.WriteLine("Botón test ejecutado"))">Test Blazor</button>
+}
 
+@code {
+    private UsuarioDTO _usuario = new();
+    [Parameter] public string? Id { get; set; }
 
-@code {  
-    UsuarioDTO _usuario = new UsuarioDTO();  
-    [Parameter] public Guid Id { get; set; }  
-    bool _esNuevoUsuario = true;  
+    private Guid _usuarioId;
+    private bool _esNuevoUsuario = true;
+    private bool _errorDeId = false;
 
-    protected override async Task OnParametersSetAsync() // Changed from 'void' to 'Task'  
-    {  
-        if (Id != Guid.Empty)  
-        {  
-            var us_hallado = await repositorioUsuario.ObtenerPorIDAsync(Id);  
-            if (us_hallado != null)  
-            {  
-                _usuario.ID = us_hallado.Id;  
-                _usuario.Nombre = us_hallado.Nombre;  
-                _usuario.Apellido = us_hallado.Apellido;  
-                _usuario.DNI = us_hallado.DNI;  
-                _usuario.Email = us_hallado.Email;  
-                _usuario.Telefono = us_hallado.Telefono;  
-                _usuario.Contrasenia = us_hallado.Contrasenia;  
-                _esNuevoUsuario = false;  
-            }  
-        }  
-    }  
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Id) && Guid.TryParse(Id, out _usuarioId))
+        {
+            var us_hallado = await repositorioUsuario.ObtenerPorIDAsync(_usuarioId);
+            if (us_hallado is not null)
+            {
+                _usuario.ID = us_hallado.Id;
+                _usuario.Nombre = us_hallado.Nombre;
+                _usuario.Apellido = us_hallado.Apellido;
+                _usuario.DNI = us_hallado.DNI;
+                _usuario.Email = us_hallado.Email;
+                _usuario.Telefono = us_hallado.Telefono;
+                _usuario.Contrasenia = us_hallado.Contrasenia;
+                _esNuevoUsuario = false;
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(Id))
+        {
+            _errorDeId = true;
+        }
+    }
 
-    async Task Aceptar() 
-    {  
-        var usuarioActual = UsuarioServicioLogin.GetUser();  
-        if (_esNuevoUsuario)  
-        {  
-            try  
-            {  
-                await UsuarioAltaUseCase.EjecutarAsync(_usuario, usuarioActual.Id);  
-            }  
-            catch (Exception ex)  
-            {  
-                Console.WriteLine(ex);  
-            }  
-        }  
-        else  
-        {  
-            try  
-            {  
-                 await UsuarioModificacionUseCase.Ejecutar(Id, _usuario, usuarioActual.Id);  
-            }  
-            catch (Exception ex)  
-            {  
-                Console.WriteLine(ex);  
-            }  
-        }  
-        _usuario = new UsuarioDTO();  
-        Navegador.NavigateTo("ListadoUsuarios");  
-    }  
+    private async Task Aceptar()
+    {
+        var usuarioActual = UsuarioServicioLogin.GetUser();
+
+        try
+        {
+            if (_esNuevoUsuario)
+            {
+                await UsuarioAltaUseCase.EjecutarAsync(_usuario, usuarioActual.Id);
+            }
+            else
+            {
+                try
+                {
+                    await UsuarioModificacionUseCase.Ejecutar(_usuarioId, _usuario, usuarioActual.Id);
+                    Console.WriteLine($"Usuario modificado: {_usuario.Nombre} {_usuario.Apellido}");
+                }catch(Exception ex)
+                {
+                    Console.WriteLine($"Error al modificar el usuario: {ex.Message}");
+                }
+
+        
+            }
+            Navegador.NavigateTo("ListadoUsuarios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
 }

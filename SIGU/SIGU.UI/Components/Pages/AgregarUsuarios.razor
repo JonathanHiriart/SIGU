@@ -18,7 +18,8 @@ else if (!tienePermiso)
     </div>  
 }  
 else  
-{  
+{
+    <button @onclick="@(() => Console.WriteLine("Botón test ejecutado"))">Test Blazor</button>
     <h3>Agregar Usuario</h3>
     <p>Completa los siguientes campos para agregar un nuevo usuario:</p>
 
@@ -32,6 +33,7 @@ else
         <InputText @bind-Value="usuarioNuevo.Telefono" class="form-control mb-2" placeholder="Teléfono" />
         <InputText @bind-Value="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />
         <button class="btn btn-primary mb-2" type="submit">Agregar nuevo usuario</button>
+        
     </EditForm>
     @if (!string.IsNullOrEmpty(mensaje))  
     {  
