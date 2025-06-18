@@ -11,8 +11,9 @@ public class LoginUseCase
         _repositorioUsuario= repositorioUsuario;
         _hasheador = hasheador;
     }
-    public async Task<bool>IniciarSesion(string email, string password)
+    public async Task<Usuario?>IniciarSesion(string email, string password)
     {
+        
         Usuario? usuario = await _repositorioUsuario.obtenerPorEmailAsync(email);
         if (usuario == null)
         {
@@ -23,6 +24,6 @@ public class LoginUseCase
         {
             throw new ValidacionException("Contraseña incorrecta. Por favor, intente nuevamente.");
         }
-        return true;
+        return usuario;
     }
 }

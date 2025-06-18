@@ -17,7 +17,8 @@
     string _mensajeError = string.Empty;  
 
     async Task Iniciar()  
-    {  
+    {
+        Console.WriteLine("Iniciando sesión...");
         if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))  
         {  
             _mensajeError = "Email y contraseña son obligatorios.";  
@@ -25,11 +26,13 @@
         }  
         try  
         {  
-            var loginExitoso = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);  
-            if (loginExitoso)  
+            Usuario? usuario = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);  
+            if (usuario!=null)  
             {  
-                nav.NavigateTo("/Home");
+                usuarioServicioLogin.SetUser(usuario);
                 usuarioServicioLogin.Logueado();  
+                nav.NavigateTo("/Home");
+                Console.WriteLine("Logueado con exito");
             }  
             else  
             {  

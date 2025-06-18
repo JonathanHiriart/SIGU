@@ -8,7 +8,11 @@ public class UsuarioServicioLogin
 
 	private bool _logueado = false;
 
-	public void SetUser(Usuario user) { 
+	public UsuarioServicioLogin() {
+		usuario = null!;
+		_logueado = false;
+    }
+    public void SetUser(Usuario user) { 
 		usuario = user;
 	}
 
