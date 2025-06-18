@@ -13,13 +13,8 @@ public class ReservaListadoUseCase
         _repositorioReserva = repositorioUsuario;
         _servicioAutorizacion = servicioAutorizacion;
     }
-    public async Task<List<ReservaDTO>> Ejecutar(Guid IdUsuario)
+    public async Task<List<ReservaDTO>> Ejecutar()
     {
-        bool tienePermiso = await _servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.ReservaListar);
-        if (!tienePermiso)
-        {
-            throw new FalloAutorizacionException("El usuario no tiene permisos para listar reserva.");
-        }
         List<Reserva> reservas= await _repositorioReserva.ListarAsync() ?? new List<Reserva>();
         if (reservas.Count == 0)
         {

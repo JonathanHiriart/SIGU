@@ -14,13 +14,8 @@ public class EventoDeportivoListadoUseCase
         _servicioAutorizacion = servicioAutorizacion;
         _repositorioEventoDeportivo = repositorioEventoDeportivo;
     }
-    public async Task<List<EventoDeportivoDTO>> EjecutarAsync(Guid idUsuario)
+    public async Task<List<EventoDeportivoDTO>> EjecutarAsync()
     {
-        bool estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoListar);
-        if (!estaAutorizado)
-        {
-            throw new FalloAutorizacionException("El usuario no tiene permiso para listar Eventos deportivos.");
-        }
         List<EventoDeportivo> ListaEventos = await _repositorioEventoDeportivo.ListarAsync() ?? new List<EventoDeportivo>();
         if (ListaEventos.Count == 0)
         {

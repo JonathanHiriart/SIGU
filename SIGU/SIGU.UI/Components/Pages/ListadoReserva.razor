@@ -51,7 +51,7 @@
             try
             {
                 var usuarioActual = UsuarioServicioLogin.GetUser();
-                reservas = await reservaListadoUseCase.Ejecutar(usuarioActual.Id);
+                reservas = await reservaListadoUseCase.Ejecutar();
             }
             catch (Exception ex)
             {
