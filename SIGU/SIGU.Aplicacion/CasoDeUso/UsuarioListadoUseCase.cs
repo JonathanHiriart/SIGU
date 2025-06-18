@@ -13,13 +13,8 @@ public class UsuarioListadoUseCase
         _repositorioUsuario = repositorioUsuario;
         _servicioAutorizacion = servicioAutorizacion;
     }
-    public async Task<List<UsuarioDTO>> Ejecutar(Guid IdUsuario)
+    public async Task<List<UsuarioDTO>> Ejecutar()
     {
-        bool tienePermiso = await _servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioListar);
-        if (!tienePermiso)
-        {
-            throw new FalloAutorizacionException("El usuario no tiene permisos para listar usuarios.");
-        }
         List<Usuario> usuarios = await _repositorioUsuario.ListarAsync() ?? new List<Usuario>();
         if (usuarios.Count == 0)
         {

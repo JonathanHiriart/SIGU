@@ -1,0 +1,72 @@
+@page "/usuario/{Id:Guid?}"
+@rendermode InteractiveServer
+@inject UsuarioServicioLogin UsuarioServicioLogin
+@inject IRepositorioUsuario repositorioUsuario
+@inject UsuarioModificacionUseCase UsuarioModificacionUseCase
+@inject NavigationManager Navegador
+@inject UsuarioAltaUseCase UsuarioAltaUseCase
+
+@if(_esNuevoUsuario){
+    <h3>Agregando un nuevo usuario</h3>
+}else{
+    <h3>Modificando al usuario "@_usuario.Nombre"</h3>
+}
+
+<input placeholder="Nombre" @bind="_usuario.Nombre" class="form-control">
+<input placeholder="Apellido" @bind="_usuario.Apellido" class="form-control">
+<button class="btn btn-primary" @onclick="Aceptar">Aceptar</button>
+
+
+@code {  
+    UsuarioDTO _usuario = new UsuarioDTO();  
+    [Parameter] public Guid Id { get; set; }  
+    bool _esNuevoUsuario = true;  
+
+    protected override async Task OnParametersSetAsync() // Changed from 'void' to 'Task'  
+    {  
+        if (Id != Guid.Empty)  
+        {  
+            var us_hallado = await repositorioUsuario.ObtenerPorIDAsync(Id);  
+            if (us_hallado != null)  
+            {  
+                _usuario.ID = us_hallado.Id;  
+                _usuario.Nombre = us_hallado.Nombre;  
+                _usuario.Apellido = us_hallado.Apellido;  
+                _usuario.DNI = us_hallado.DNI;  
+                _usuario.Email = us_hallado.Email;  
+                _usuario.Telefono = us_hallado.Telefono;  
+                _usuario.Contrasenia = us_hallado.Contrasenia;  
+                _esNuevoUsuario = false;  
+            }  
+        }  
+    }  
+
+    async Task Aceptar() 
+    {  
+        var usuarioActual = UsuarioServicioLogin.GetUser();  
+        if (_esNuevoUsuario)  
+        {  
+            try  
+            {  
+                await UsuarioAltaUseCase.EjecutarAsync(_usuario, usuarioActual.Id);  
+            }  
+            catch (Exception ex)  
+            {  
+                Console.WriteLine(ex);  
+            }  
+        }  
+        else  
+        {  
+            try  
+            {  
+                 await UsuarioModificacionUseCase.Ejecutar(Id, _usuario, usuarioActual.Id);  
+            }  
+            catch (Exception ex)  
+            {  
+                Console.WriteLine(ex);  
+            }  
+        }  
+        _usuario = new UsuarioDTO();  
+        Navegador.NavigateTo("ListadoUsuarios");  
+    }  
+}

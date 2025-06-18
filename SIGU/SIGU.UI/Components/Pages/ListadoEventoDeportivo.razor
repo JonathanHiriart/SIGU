@@ -56,7 +56,7 @@
             try
             {
                 var usuarioActual = UsuarioServicioLogin.GetUser();
-                eventos = await EventoDeportivoListadoUseCase.EjecutarAsync(usuarioActual.Id);
+                eventos = await EventoDeportivoListadoUseCase.EjecutarAsync();
             }
             catch (Exception ex)
             {

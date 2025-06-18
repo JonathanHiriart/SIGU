@@ -19,7 +19,7 @@ public class UsuarioModificacionUseCase
 		this._hasheador = hasheador;
 		this._validadorUsuario = validadorUsuario;
     }
-	public async void Ejecutar(Guid IdPersonaAModificar, UsuarioDTO usuarioModificado, Guid IdUsuario)
+	public async Task Ejecutar(Guid IdPersonaAModificar, UsuarioDTO usuarioModificado, Guid IdUsuario)
 	{
 		// 1. Verificar permiso
 		bool tienePermiso = await _servicioAutorizacion.EstaAutorizado(IdUsuario, Permiso.UsuarioModificacion);
