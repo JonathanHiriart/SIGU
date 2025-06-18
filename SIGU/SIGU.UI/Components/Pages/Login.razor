@@ -1,47 +1,53 @@
-@page "/"
-@using SIGU.UI.Components.Shared
-@layout EmptyLayout
-@rendermode InteractiveServer
-@inject LoginUseCase loginUseCase
-@inject UsuarioServicioLogin usuarioServicioLogin
-@inject NavigationManager nav
-<PageTitle>Login/Register</PageTitle>  
+@page "/"  
+@using Microsoft.AspNetCore.Components.Authorization  
+@rendermode InteractiveServer  
+@inject LoginUseCase loginUseCase  
+@inject UsuarioServicioLogin usuarioServicioLogin  
+@inject NavigationManager nav  
+@inject AuthenticationStateProvider authProvider  
+<PageTitle>Login/Register</PageTitle>    
 
-<h1>Login</h1>  
-<input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />
-<input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />
-<button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>  
+<h1>Login</h1>    
+<input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />  
+<input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />  
+<button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>    
 
-@code {
-    UsuarioLoginDTO user = new UsuarioLoginDTO();
-    string _mensajeError = string.Empty;  
+@code {  
+    UsuarioLoginDTO user = new UsuarioLoginDTO();  
+    string _mensajeError = string.Empty;    
 
-    async Task Iniciar()  
-    {
-        Console.WriteLine("Iniciando sesión...");
-        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))  
-        {  
-            _mensajeError = "Email y contraseña son obligatorios.";  
-            return;  
-        }  
-        try  
-        {  
-            Usuario? usuario = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);  
-            if (usuario!=null)  
-            {  
-                usuarioServicioLogin.SetUser(usuario);
-                usuarioServicioLogin.Logueado();  
-                nav.NavigateTo("/Home");
-                Console.WriteLine("Logueado con exito");
-            }  
-            else  
-            {  
-                _mensajeError = "Email o contraseña incorrectos.";  
-            }  
-        }  
-        catch (Exception ex)  
-        {  
-            _mensajeError = $"Error al iniciar sesión: {ex.Message}";  
-        }  
-    }  
+    async Task Iniciar()    
+    {  
+        Console.WriteLine("Iniciando sesión...");  
+        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))    
+        {    
+            _mensajeError = "Email y contraseña son obligatorios.";    
+            return;    
+        }    
+        try    
+        {    
+            Usuario? usuario = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);    
+            if (usuario!=null)    
+            {    
+                usuarioServicioLogin.SetUser(usuario);  
+
+                // Notifica al AuthenticationStateProvider  
+                if (authProvider is CustomAuthenticationStateProvider customAuth)  
+                {  
+                    customAuth.SetUser(usuario);  
+                }  
+
+                nav.NavigateTo("/Home");  
+                Console.WriteLine("Logueado con exito");  
+            }    
+            else    
+            {    
+                _mensajeError = "Email o contraseña incorrectos.";    
+            }    
+        }    
+        catch (Exception ex)    
+        {    
+            _mensajeError = $"Error al iniciar sesión: {ex.Message}";    
+        }    
+    }    
 }

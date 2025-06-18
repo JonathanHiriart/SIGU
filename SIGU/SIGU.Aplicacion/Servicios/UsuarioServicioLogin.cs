@@ -4,34 +4,33 @@ namespace SIGU.Aplicacion.Servicios;
 
 public class UsuarioServicioLogin
 {
-	private Usuario usuario { get; set; } = null!;
+	private Usuario? _usuario;
 
-	private bool _logueado = false;
+	private bool _logueado;
 
 	public UsuarioServicioLogin() {
-		usuario = null!;
+		_usuario = null!;
 		_logueado = false;
     }
     public void SetUser(Usuario user) { 
-		usuario = user;
-	}
+		_usuario = user;
+		_logueado = true;
+    }
 
 	public Usuario GetUser() {
-		if (usuario == null) {
-			throw new InvalidOperationException("No se pudo obtener el usuario");
-		}
-		return usuario;
-	}
-
-	public void Logueado() {
-		_logueado = true;
-	}
-
-	public Guid recuperarID() {
-		if (usuario == null) {
+        if (!_logueado || _usuario == null)
+            throw new InvalidOperationException("No hay un usuario logueado.");
+        return _usuario;
+    }
+    public void Logueado()
+    {
+        _logueado = true;
+    }
+    public Guid recuperarID() {
+		if (_usuario == null) {
 			throw new InvalidOperationException("No se pudo recuperar el ID del usuario porque no está logueado o el usuario es nulo.");
 		}
-		return usuario.Id;
+		return _usuario.Id;
 	}
 
 }
