@@ -1,4 +1,5 @@
 @page "/AgregarUsuarios"  
+@rendermode InteractiveServer
 @inject NavigationManager nav  
 @inject UsuarioServicioLogin usuarioServicioLogin  
 @inject UsuarioAltaUseCase usuarioAltaUseCase  
@@ -40,7 +41,6 @@ else
         <input @bind="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
     </label>
     <button class="btn btn-primary mb-2" @onclick="AgregarUsuario">Agregar nuevo usuario</button>
-    <button @onclick="@(() => Console.WriteLine("Botón test ejecutado"))">Test Blazor</button>
 
 
     @if (!string.IsNullOrEmpty(mensaje))  
@@ -49,7 +49,7 @@ else
     }  
 }  
 
-@code {  
+@code {
     UsuarioDTO usuarioNuevo = new UsuarioDTO();  
     string mensaje = string.Empty;  
     bool tienePermiso = false;  
@@ -82,9 +82,7 @@ else
         Console.WriteLine("Agregando usuario...");
         try  
         {  
-            Console.WriteLine("Validando Usuario");  
             await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());  
-            mensaje = "Usuario agregado correctamente.";  
             Console.WriteLine("Usuario agregado correctamente.");  
             usuarioNuevo = new UsuarioDTO();  
         }  
