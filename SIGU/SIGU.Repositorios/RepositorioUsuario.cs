@@ -18,7 +18,15 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
 
     public async Task<Usuario?> ObtenerPorIDAsync(Guid id)
     {
-        return await db.Usuario.FindAsync(id);
+        Console.WriteLine($"Buscando usuario con ID: {id} (tipo: {id.GetType()})");
+        var usuario = await db.Usuario.FindAsync(id);
+        if(usuario == null) 
+        { 
+            Console.WriteLine($"Usuario con ID {id} no encontrado.");
+            return null!;
+        }
+        Console.WriteLine($"Usuario encontrado: {usuario.Nombre} {usuario.Apellido}");
+        return usuario;
     }
 
     public async Task AgregarAsync(Usuario usuario)

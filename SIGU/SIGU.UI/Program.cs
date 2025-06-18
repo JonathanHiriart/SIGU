@@ -5,7 +5,6 @@ using SIGU.Aplicacion.Servicios;
 using SIGU.Aplicacion.Validadores;
 using SIGU.Repositorios;
 using SIGU.Repositorios.reserva;
-using Microsoft.AspNetCore.Components.Authorization;
 using SIGU.UI.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,8 +46,6 @@ builder.Services.AddScoped<ReservaAltaUseCase>();
 builder.Services.AddScoped<ReservaBajaUseCase>();
 builder.Services.AddScoped<ReservaListadoUseCase>();
 builder.Services.AddScoped<ReservaModificacionUseCase>();
-// Configurar la autenticación y autorización
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthorizationCore();
 var app = builder.Build();
 

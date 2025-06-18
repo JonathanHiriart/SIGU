@@ -1,54 +1,43 @@
 @page "/AgregarUsuarios"
-@using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager nav  
 @inject UsuarioServicioLogin usuarioServicioLogin  
 @inject UsuarioAltaUseCase usuarioAltaUseCase 
-@inject IServicioAutorizacion servicioAutorizacion
 <PageTitle>Agregar Usuario</PageTitle>  
 
 @using SIGU.Aplicacion.DTOs  
 @using SIGU.Aplicacion.Enums  
 
-<AuthorizeView>
-    <Authorized Context="usuarioAuth">
-        @if (cargando)  
-        {  
-            <p>Cargando...</p>  
-        }  
-        else if (!tienePermiso)  
-        {  
-            <div class="alert alert-danger">  
-                No tienes permiso para agregar usuarios.  
-            </div>  
-        }  
-        else  
-        {  
-            <h3>Agregar Usuario</h3>  
-            <EditForm Model="usuarioNuevo" OnValidSubmit="AgregarUsuario">  
-                <DataAnnotationsValidator />  
-                <ValidationSummary />  
+@if (cargando)  
+{  
+    <p>Cargando...</p>  
+}  
+else if (!tienePermiso)  
+{  
+    <div class="alert alert-danger">  
+        No tienes permiso para agregar usuarios.  
+    </div>  
+}  
+else  
+{  
+    <h3>Agregar Usuario</h3>
+    <p>Completa los siguientes campos para agregar un nuevo usuario:</p>
 
-                <InputText @bind-Value="usuarioNuevo.Nombre" class="form-control mb-2" placeholder="Nombre" />  
-                <InputText @bind-Value="usuarioNuevo.Apellido" class="form-control mb-2" placeholder="Apellido" />  
-                <InputNumber @bind-Value="usuarioNuevo.DNI" class="form-control mb-2" placeholder="DNI" />  
-                <InputText @bind-Value="usuarioNuevo.Email" class="form-control mb-2" placeholder="Email" />  
-                <InputText @bind-Value="usuarioNuevo.Telefono" class="form-control mb-2" placeholder="Teléfono" />  
-                <InputText @bind-Value="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
-
-                <button class="btn btn-primary" type="submit">Agregar</button>  
-            </EditForm>  
-            @if (!string.IsNullOrEmpty(mensaje))  
-            {  
-                <div class="mt-2">@mensaje</div>  
-            }  
-        }
-    </Authorized>
-    <NotAuthorized>
-        <div class="alert alert-warning">
-            Debes iniciar sesión para acceder a esta página.
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+    <EditForm Model="usuarioNuevo" OnValidSubmit="AgregarUsuario">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <InputText @bind-Value="usuarioNuevo.Nombre" class="form-control mb-2" placeholder="Nombre" />
+        <InputText @bind-Value="usuarioNuevo.Apellido" class="form-control mb-2" placeholder="Apellido" />
+        <InputNumber @bind-Value="usuarioNuevo.DNI" class="form-control mb-2" placeholder="DNI" />
+        <InputText @bind-Value="usuarioNuevo.Email" class="form-control mb-2" placeholder="Correo Electrónico" />
+        <InputText @bind-Value="usuarioNuevo.Telefono" class="form-control mb-2" placeholder="Teléfono" />
+        <InputText @bind-Value="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />
+        <button class="btn btn-primary mb-2" type="submit">Agregar nuevo usuario</button>
+    </EditForm>
+    @if (!string.IsNullOrEmpty(mensaje))  
+    {  
+        <div class="mt-2">@mensaje</div>  
+    }  
+}
 
 @code {
     UsuarioDTO usuarioNuevo = new UsuarioDTO();
@@ -62,15 +51,15 @@
         try
         {
             Console.WriteLine("Obteniendo usuario actual...");
-            Usuario usuarioActual = usuarioServicioLogin.GetUser();
-            Console.WriteLine("Usuario obtenido.");
+            Usuario usuarioActual = await Task.Run(() => usuarioServicioLogin.GetUser());
+            Console.WriteLine($"ID del usuario actual: {usuarioActual?.Id}");
             if (usuarioActual == null)
             {
-                nav.NavigateTo("/Login");
+                nav.NavigateTo("/");
                 return;
             }
             Console.WriteLine("Verificando permisos...");
-            tienePermiso = await servicioAutorizacion.EstaAutorizado(usuarioActual.Id, Permiso.UsuarioAlta);
+            tienePermiso = usuarioActual.Permisos.Contains(Permiso.UsuarioAlta);
             Console.WriteLine("Permisos verificados.");
         }
         catch (Exception ex)
@@ -86,6 +75,7 @@
     {
         try
         {
+            Console.WriteLine("Validando Usuario");
             await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());
             mensaje = "Usuario agregado correctamente.";
             Console.WriteLine("Usuario agregado correctamente.");

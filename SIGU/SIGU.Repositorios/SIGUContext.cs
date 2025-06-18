@@ -45,22 +45,15 @@ public class SIGUContext : DbContext
 
         // Usuario.Permisos como string serializado
         var permisosConverter = new ValueConverter<List<Permiso>, string>(
-            permisos => string.Join(",", permisos.Select(p => p.ToString())),
-            texto => texto.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                          .Select(s => Enum.Parse<Permiso>(s))
-                          .ToList()
-            );
-
-        var permisosComparer = new ValueComparer<List<Permiso>>(
-            (c1, c2) => (c1 ?? new List<Permiso>()).SequenceEqual(c2 ?? new List<Permiso>()),
-            c => (c ?? new List<Permiso>()).Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-            c => c == null ? new List<Permiso>() : c.ToList()
+        permisos => string.Join(",", permisos.Select(p => p.ToString())),
+        texto => texto.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                      .Select(s => Enum.Parse<Permiso>(s))
+                      .ToList()
         );
 
         modelBuilder.Entity<Usuario>()
             .Property(u => u.Permisos)
-            .HasConversion(permisosConverter)
-            .Metadata.SetValueComparer(permisosComparer);
+            .HasConversion(permisosConverter);
 
     }
 }
