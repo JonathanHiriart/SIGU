@@ -1,7 +1,7 @@
-@page "/AgregarUsuarios"
+@page "/AgregarUsuarios"  
 @inject NavigationManager nav  
 @inject UsuarioServicioLogin usuarioServicioLogin  
-@inject UsuarioAltaUseCase usuarioAltaUseCase 
+@inject UsuarioAltaUseCase usuarioAltaUseCase  
 <PageTitle>Agregar Usuario</PageTitle>  
 
 @using SIGU.Aplicacion.DTOs  
@@ -19,71 +19,78 @@ else if (!tienePermiso)
 }  
 else  
 {  
-    <h3>Agregar Usuario</h3>
-    <p>Completa los siguientes campos para agregar un nuevo usuario:</p>
+    <h3>Agregar Usuario</h3>  
+    <p>Completa los siguientes campos para agregar un nuevo usuario:</p>  
+    <label class="form-label">Nombre
+        <input @bind="usuarioNuevo.Nombre" class="form-control mb-2" placeholder="Nombre" />
+    </label>  
+    <label class="col-form-label">Apellido
+        <input @bind="usuarioNuevo.Apellido" class="form-control mb-2" placeholder="Apellido" />
+    </label>  
+    <label class="col-form-label">DNI
+        <input @bind="usuarioNuevo.DNI" class="form-control mb-2" placeholder="DNI" />
+    </label>  
+    <label class="col-form-label">Email
+        <input @bind="usuarioNuevo.Email" class="form-control mb-2" placeholder="Correo Electrónico" />
+    </label>  
+    <label class="col-form-label">Telefóno  
+        <input @bind="usuarioNuevo.Telefono" class="form-control mb-2" placeholder="Teléfono" />  
+    </label>  
+    <label class="col-form-label">Contraseña  
+        <input @bind="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
+    </label>
+    <button class="btn btn-primary mb-2" @onclick="AgregarUsuario">Agregar nuevo usuario</button>
+    <button @onclick="@(() => Console.WriteLine("Botón test ejecutado"))">Test Blazor</button>
 
-    <EditForm Model="usuarioNuevo" OnValidSubmit="AgregarUsuario">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <InputText @bind-Value="usuarioNuevo.Nombre" class="form-control mb-2" placeholder="Nombre" />
-        <InputText @bind-Value="usuarioNuevo.Apellido" class="form-control mb-2" placeholder="Apellido" />
-        <InputNumber @bind-Value="usuarioNuevo.DNI" class="form-control mb-2" placeholder="DNI" />
-        <InputText @bind-Value="usuarioNuevo.Email" class="form-control mb-2" placeholder="Correo Electrónico" />
-        <InputText @bind-Value="usuarioNuevo.Telefono" class="form-control mb-2" placeholder="Teléfono" />
-        <InputText @bind-Value="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />
-        <button class="btn btn-primary mb-2" type="submit">Agregar nuevo usuario</button>
-    </EditForm>
+
     @if (!string.IsNullOrEmpty(mensaje))  
     {  
         <div class="mt-2">@mensaje</div>  
     }  
-}
+}  
 
-@code {
-    UsuarioDTO usuarioNuevo = new UsuarioDTO();
-    string mensaje = string.Empty;
-    bool tienePermiso = false;
-    bool cargando = true;
+@code {  
+    UsuarioDTO usuarioNuevo = new UsuarioDTO();  
+    string mensaje = string.Empty;  
+    bool tienePermiso = false;  
+    bool cargando = true;  
 
-    protected override async Task OnInitializedAsync()
-    {
-        Console.WriteLine("Iniciando la página de agregar usuarios...");
-        try
-        {
-            Console.WriteLine("Obteniendo usuario actual...");
-            Usuario usuarioActual = await Task.Run(() => usuarioServicioLogin.GetUser());
-            Console.WriteLine($"ID del usuario actual: {usuarioActual?.Id}");
-            if (usuarioActual == null)
-            {
-                nav.NavigateTo("/");
-                return;
-            }
-            Console.WriteLine("Verificando permisos...");
-            tienePermiso = usuarioActual.Permisos.Contains(Permiso.UsuarioAlta);
-            Console.WriteLine("Permisos verificados.");
-        }
-        catch (Exception ex)
-        {
-            tienePermiso = false;
-            Console.WriteLine("ERROR EN OnInitializedAsync: " + ex.Message);
-        }
+    protected override async Task OnInitializedAsync()  
+    {  
 
-        cargando = false;
-    }
+        try  
+        {  
+            Usuario usuarioActual = await Task.Run(() => usuarioServicioLogin.GetUser());  
+            if (usuarioActual == null)  
+            {  
+                nav.NavigateTo("/");  
+                return;  
+            }  
+            tienePermiso = usuarioActual.Permisos.Contains(Permiso.UsuarioAlta);  
+        }  
+        catch (Exception ex)  
+        {  
+            tienePermiso = false;  
+            Console.WriteLine("ERROR EN OnInitializedAsync: " + ex.Message);  
+        }  
 
-    async Task AgregarUsuario()
-    {
-        try
-        {
-            Console.WriteLine("Validando Usuario");
-            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());
-            mensaje = "Usuario agregado correctamente.";
-            Console.WriteLine("Usuario agregado correctamente.");
-            usuarioNuevo = new UsuarioDTO();
-        }
-        catch (Exception ex)
-        {
-            mensaje = $"Error: {ex.Message}";
-        }
-    }
+        cargando = false;  
+    }  
+
+    private async Task AgregarUsuario()  
+    {  
+        Console.WriteLine("Agregando usuario...");
+        try  
+        {  
+            Console.WriteLine("Validando Usuario");  
+            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo, usuarioServicioLogin.recuperarID());  
+            mensaje = "Usuario agregado correctamente.";  
+            Console.WriteLine("Usuario agregado correctamente.");  
+            usuarioNuevo = new UsuarioDTO();  
+        }  
+        catch (Exception ex)  
+        {  
+            mensaje = $"Error: {ex.Message}";  
+        }  
+    }  
 }
