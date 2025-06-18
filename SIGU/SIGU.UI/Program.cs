@@ -15,7 +15,7 @@ builder.Services.AddRazorComponents()
 
 //  Inyectar SIGUContext con EF Core y SQLite
 builder.Services.AddDbContext<SIGUContext>(options =>
-    options.UseSqlite("Data Source=SIGU.sqlite"));
+    options.UseSqlite("Data Source=../SIGU.Repositorios/SIGU.sqlite"));
 
 // Inyeccion de dependencias
 builder.Services.AddScoped<IServicioAutorizacion,ServicioAutorizacion>();

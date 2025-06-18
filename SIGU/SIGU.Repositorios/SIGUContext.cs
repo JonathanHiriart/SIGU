@@ -15,6 +15,13 @@ public class SIGUContext : DbContext
 	#nullable restore
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<Usuario>()
+            .HasIndex(u => u.DNI)
+            .IsUnique();
         // Usuario → Reservas (1:N)
         modelBuilder.Entity<Reserva>()
             .HasOne(r => r.Usuario)
@@ -54,5 +61,6 @@ public class SIGUContext : DbContext
             .Property(u => u.Permisos)
             .HasConversion(permisosConverter)
             .Metadata.SetValueComparer(permisosComparer);
+
     }
 }
