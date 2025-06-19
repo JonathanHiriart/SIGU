@@ -1,5 +1,5 @@
 @page "/AgregarUsuarios"  
-@rendermode InteractiveServer
+@rendermode InteractiveServer  
 @inject NavigationManager nav  
 @inject UsuarioServicioLogin usuarioServicioLogin  
 @inject UsuarioAltaUseCase usuarioAltaUseCase  
@@ -40,6 +40,40 @@ else
     <label class="col-form-label">Contraseña  
         <input @bind="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
     </label>
+    <label class="form-label">Permisos:</label>
+    @if (admin)
+    {
+        @foreach (Permiso permiso in Enum.GetValues<Permiso>())
+        {
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="checkbox"
+                       checked="@usuarioNuevo.permisos.Contains(permiso)"
+                       @onchange="(e => OnPermisoChanged(permiso, e.Value))" />
+                <label class="form-check-label">@permiso.ToString()</label>
+            </div>
+        }
+    }
+
+    @code {
+        // ...código existente...
+
+        private void OnPermisoChanged(Permiso permiso, object? checkedValue)
+        {
+            bool isChecked = checkedValue is bool b && b;
+            if (isChecked)
+            {
+                if (!usuarioNuevo.permisos.Contains(permiso))
+                    usuarioNuevo.permisos.Add(permiso);
+            }
+            else
+            {
+                if (usuarioNuevo.permisos.Contains(permiso))
+                    usuarioNuevo.permisos.Remove(permiso);
+            }
+        }
+    }
+
     <button class="btn btn-primary mb-2" @onclick="AgregarUsuario">Agregar nuevo usuario</button>
 
 
@@ -55,18 +89,21 @@ else
     bool tienePermiso = false;  
     bool cargando = true;
     Usuario actual = null!;
+    bool admin = false;
 
     protected override async Task OnInitializedAsync()  
     {  
 
         try  
         {
+            
             actual = usuarioServicioLogin.GetUser();
             if (actual == null)  
             {  
                 nav.NavigateTo("/");  
                 return;  
-            }  
+            }
+            admin = usuarioServicioLogin.isAdmin();
             tienePermiso = actual.Permisos.Contains(Permiso.UsuarioAlta);  
         }  
         catch (Exception ex)  
@@ -83,6 +120,7 @@ else
         Console.WriteLine("Agregando usuario...");
         try  
         {  
+
             await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo,actual.Id);  
             Console.WriteLine("Usuario agregado correctamente.");  
             usuarioNuevo = new UsuarioDTO();  
@@ -92,4 +130,5 @@ else
             mensaje = $"Error: {ex.Message}";  
         }  
     }  
+
 }

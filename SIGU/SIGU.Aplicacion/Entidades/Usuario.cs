@@ -14,7 +14,7 @@ public class Usuario
     public List<Reserva> Reservas { get; private set; } = new List<Reserva>();
 
     protected Usuario() { }
-    public Usuario(string nombre, string apellido, int dni, string email, string telefono, string contrasenia)
+    public Usuario(string nombre, string apellido, int dni, string email, string telefono, string contrasenia,List<Permiso> list)
     {
         this.Nombre = nombre;
         this.Apellido = apellido;
@@ -22,6 +22,7 @@ public class Usuario
         this.Email = email;
         this.Telefono = telefono;
         this.Contrasenia = contrasenia;
+        this.Permisos = list ?? new List<Permiso>();
     }
 
     public void ActualizarDatos(string nombre, string apellido, int dni, string email, string telefono, string contrasenia, List<Permiso> permisos)

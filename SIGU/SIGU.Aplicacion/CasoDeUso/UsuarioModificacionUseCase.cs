@@ -56,7 +56,7 @@ public class UsuarioModificacionUseCase
         {
             throw new ValidacionException("El teléfono no puede ser nulo o vacío.");
         }
-        Usuario? usuarioModificar = new Usuario(usuarioModificado.Nombre, usuarioModificado.Apellido, usuarioModificado.DNI, usuarioModificado.Email, usuarioModificado.Telefono, usuarioModificado.Contrasenia);
+        Usuario? usuarioModificar = new Usuario(usuarioModificado.Nombre, usuarioModificado.Apellido, usuarioModificado.DNI, usuarioModificado.Email, usuarioModificado.Telefono, usuarioModificado.Contrasenia,usuarioModificado.permisos);
 		var (esValido, msgError) = await _validadorUsuario.ValidarParaModificarAsync(usuarioModificar);
 		if (!esValido)
 		{

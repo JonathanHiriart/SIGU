@@ -1,3 +1,4 @@
+using SIGU.Aplicacion.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace SIGU.Aplicacion.DTOs;
@@ -30,4 +31,5 @@ public class UsuarioDTO
     [Required(ErrorMessage = "La contraseña es obligatoria.")]
     [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
     public string? Contrasenia { get; set; }
+    public List<Permiso> permisos { get; set; } = new List<Permiso>();
 }

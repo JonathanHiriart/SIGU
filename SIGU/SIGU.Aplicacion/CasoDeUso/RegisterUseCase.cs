@@ -43,7 +43,7 @@ public class RegisterUseCase
             throw new ArgumentException("El teléfono no puede ser nulo o vacío.");
         }
         // Crear una instancia de Usuario a partir del DTO
-        Usuario? usuario = new Usuario(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.DNI, usuarioNuevo.Email, usuarioNuevo.Telefono, usuarioNuevo.Contrasenia);
+        Usuario? usuario = new Usuario(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.DNI, usuarioNuevo.Email, usuarioNuevo.Telefono, usuarioNuevo.Contrasenia,usuarioNuevo.permisos);
         var (esValido, msgError) = await _validadorUsuario.ValidarParaAgregarAsync(usuario);
         if (!esValido)
         {

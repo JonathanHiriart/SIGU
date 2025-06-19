@@ -7,8 +7,7 @@ public class UsuarioServicioLogin
 	private Usuario? _usuario;
 
 	private bool _logueado;
-
-	public UsuarioServicioLogin() {
+    public UsuarioServicioLogin() {
 		_usuario = null!;
 		_logueado = false;
     }
@@ -24,6 +23,14 @@ public class UsuarioServicioLogin
             throw new InvalidOperationException("No hay un usuario logueado.");
         return _usuario;
     }
+	public bool isAdmin() 
+	{
+		if (_usuario != null)
+		{
+			return _usuario.Permisos.Count > 8;
+		}
+		else return false;
+	}
     public void Logueado()
     {
         _logueado = true;
