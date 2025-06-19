@@ -25,7 +25,8 @@ else
                 <th>Fecha Inicio</th>  
                 <th>Duracion</th>  
                 <th>Cupo Maximo</th>  
-                <th>Acciones</th>  
+                <th>Acciones</th>
+                <th>Asistentes</th>
             </tr>  
         </thead>  
         <tbody>  
@@ -45,7 +46,17 @@ else
                             <button class="btn btn-primary" @onclick="() => ModificarEvento(evento.Id)">Editar</button>  
                             <button class="btn btn-danger" @onclick="() => ConfirmarEliminacion(evento)">Eliminar</button>  
                             <button class="btn btn-secondary" @onclick="() => inscribirse(evento)">Inscribirse</button>  
-                        </td>  
+                        </td>
+                        <td>
+                            @if (evento.FechaHoraInicio < DateTime.Now)
+                            {
+
+                                <button class="btn btn-info" @onclick="() => listadoAsistentes(evento.Id)">Ver</button>
+
+                            }
+                        </td>
+                        
+                        
                     </tr>  
                 }  
             }  
@@ -133,5 +144,10 @@ else
     void ModificarEvento(Guid id)  
     {  
         navegador.NavigateTo($"/evento/{id}");  
-    }  
+    }
+    
+    void listadoAsistentes(Guid id)  
+    {  
+        navegador.NavigateTo($"/ListadoAsistentes/{id}");  
+    }
 }

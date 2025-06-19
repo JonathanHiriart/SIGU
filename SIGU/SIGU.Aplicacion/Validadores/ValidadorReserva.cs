@@ -84,11 +84,8 @@ public class ValidadorReserva
             string msgError = "No se puede reservar un evento que ya ha comenzado.";
             return (false, msgError);
         }
-        if (evento.CupoMaximo <= 0 || evento.Reservas.Count >= evento.CupoMaximo)
-        {
-            string msgError = "No hay cupo disponible para este evento.";
-            return (false, msgError);
-        }
+       
+       
         return (true, "");
     }
 }

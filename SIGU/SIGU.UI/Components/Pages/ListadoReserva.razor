@@ -59,7 +59,6 @@ else
     private DialogoConfirmacion dialogo = null!;
     ReservaDTO? _reservaParaEliminar = null;
     Usuario? usuarioActual = null!;
-    bool esAdmin = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,8 +102,8 @@ else
                 Console.WriteLine($"Error al eliminar la reserva: {ex.Message}");
             }
             
-            }
         }
+    }
         void ModificarReserva(Guid id)  
     {  
         navegador.NavigateTo($"/reserva/{id}");  
