@@ -1,48 +1,59 @@
-@page "/"  
-@rendermode InteractiveServer  
-@inject LoginUseCase loginUseCase  
-@inject UsuarioServicioLogin usuarioServicioLogin  
-@inject NavigationManager nav  
-<PageTitle>Login/Register</PageTitle>    
+@page "/"
+@rendermode InteractiveServer
+@inject LoginUseCase loginUseCase
+@inject UsuarioServicioLogin usuarioServicioLogin
+@inject NavigationManager nav
+<PageTitle>Login/Register</PageTitle>
 
-<h1>Login</h1>    
-<input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />  
-<input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />  
-<button class="btn btn-primary mb-2" @onclick="Iniciar">Iniciar sesión</button>    
-<button class="btn btn-primary mb-2" @onclick="redirigir">Nuevo usuario?</button>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow" style="width: 350px; min-height: 350px;">
+        <h1 class="texto text-center mb-4">Login</h1>
+        <input type="text" placeholder="Email" @bind="user.Email" class="form-control mb-2" />
+        <input type="password" placeholder="Password" @bind="user.Contraseña" class="form-control mb-2" />
+        <button class="btn btn-primary mb-2 w-100" @onclick="Iniciar">Iniciar sesión</button>
+        <div class="text-center">
+            <a href="javascript:void(0)" class="text-primary" style="cursor:pointer;" @onclick="redirigir">Registrarse</a>
+        </div>
+        @if (!string.IsNullOrEmpty(_mensajeError))
+        {
+            <div class="alert alert-danger mt-2 text-center">@_mensajeError</div>
+        }
+    </div>
+</div>
+
 @code {
-    UsuarioLoginDTO user = new UsuarioLoginDTO();  
-    string _mensajeError = string.Empty;    
+    UsuarioLoginDTO user = new UsuarioLoginDTO();
+    string _mensajeError = string.Empty;
 
-    void redirigir()    
-    {    
-        nav.NavigateTo("/Registrarse");    
+    void redirigir()
+    {
+        nav.NavigateTo("/Registrarse");
     }
-    async Task Iniciar()    
-    {  
-        Console.WriteLine("Iniciando sesión...");  
-        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))    
-        {    
-            _mensajeError = "Email y contraseña son obligatorios.";    
-            return;    
-        }    
-        try    
-        {    
-            Usuario? usuario = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);    
-            if (usuario!=null)    
-            {    
-                usuarioServicioLogin.SetUser(usuario);  
+    async Task Iniciar()
+    {
+        Console.WriteLine("Iniciando sesión...");
+        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))
+        {
+            _mensajeError = "Email y contraseña son obligatorios.";
+            return;
+        }
+        try
+        {
+            Usuario? usuario = await loginUseCase.IniciarSesion(user.Email, user.Contraseña);
+            if (usuario != null)
+            {
+                usuarioServicioLogin.SetUser(usuario);
                 nav.NavigateTo("/Home");
-                Console.WriteLine("Logueado con exito");  
-            }    
-            else    
-            {    
-                _mensajeError = "Email o contraseña incorrectos.";    
-            }    
-        }    
-        catch (Exception ex)    
-        {    
-            _mensajeError = $"Error al iniciar sesión: {ex.Message}";    
-        }    
-    }    
+                Console.WriteLine("Logueado con exito");
+            }
+            else
+            {
+                _mensajeError = "Email o contraseña incorrectos.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _mensajeError = $"Error al iniciar sesión: {ex.Message}";
+        }
+    }
 }
