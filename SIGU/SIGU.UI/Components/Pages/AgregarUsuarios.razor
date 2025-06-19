@@ -40,7 +40,8 @@ else
     <label class="col-form-label">Contraseña  
         <input @bind="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
     </label>
-    <label class="form-label">Permisos:</label>
+    <div>
+    <label class="form-label">Permisos</label>
     @if (admin)
     {
         @foreach (Permiso permiso in Enum.GetValues<Permiso>())
@@ -54,10 +55,9 @@ else
             </div>
         }
     }
+</div>
 
     @code {
-        // ...código existente...
-
         private void OnPermisoChanged(Permiso permiso, object? checkedValue)
         {
             bool isChecked = checkedValue is bool b && b;
@@ -96,8 +96,8 @@ else
 
         try  
         {
-            
-            actual = usuarioServicioLogin.GetUser();
+            // evitr warring async
+            actual =await Task.Run(() => usuarioServicioLogin.GetUser());
             if (actual == null)  
             {  
                 nav.NavigateTo("/");  

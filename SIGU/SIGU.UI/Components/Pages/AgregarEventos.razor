@@ -56,7 +56,8 @@ else
     {  
         try  
         {
-            actual = usuarioServicioLogin.GetUser();
+            // evitar warring async
+            actual = await Task.Run(() =>usuarioServicioLogin.GetUser());
             if (actual == null)  
             {  
                 nav.NavigateTo("/");  
