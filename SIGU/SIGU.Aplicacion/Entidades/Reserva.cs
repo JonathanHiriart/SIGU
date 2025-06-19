@@ -35,14 +35,11 @@ public class Reserva
         this.Usuario = null!; // Se asignará posteriormente
         this.Id = Guid.NewGuid();
     }
-    public void ActualizarDatos(Guid usuarioID, Guid EventoDeportivoId, DateTime FechaAlta, Estado EstadoAsistencia, EventoDeportivo EventoDeportivo, Usuario Usuario)
+    public void ActualizarDatos(Guid usuarioID, Guid EventoDeportivoId, DateTime FechaAlta, Estado EstadoAsistencia)
     {
         this.usuarioID = usuarioID;
         this.EventoDeportivoId = EventoDeportivoId;
         this.FechaAlta = FechaAlta;
         this.EstadoAsistencia = EstadoAsistencia;
-        this.Usuario = Usuario;
-        this.EventoDeportivo = EventoDeportivo;
-        this.Usuario = Usuario;
     }
 }

@@ -22,6 +22,7 @@ else
                     <th>ID evento</th>
                     <th>Asistencia</th>
                     <th>Fecha Alta</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,47 +53,56 @@ else
         </table>
 }
 
-    @code {
-        List<ReservaDTO> reservas = new List<ReservaDTO>();
-        private bool logueado;
-        private DialogoConfirmacion dialogo = null!;
-        ReservaDTO? _reservaParaEliminar = null;
-        Usuario? usuarioActual = null!;
+@code {
+    List<ReservaDTO> reservas = new List<ReservaDTO>();
+    private bool logueado;
+    private DialogoConfirmacion dialogo = null!;
+    ReservaDTO? _reservaParaEliminar = null;
+    Usuario? usuarioActual = null!;
+    bool esAdmin = false;
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            usuarioActual = UsuarioServicioLogin.GetUser();
+            logueado = UsuarioServicioLogin.IsLogueado();
+            if(!logueado)
+            {
+                navegador.NavigateTo("/");
+                return;
+            } 
+            reservas = await reservaListadoUseCase.Ejecutar();
+        }
+        catch (Exception ex)
+        {
+            // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+            Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
+        }
+
+
+    }
+    private void ConfirmarEliminacion(ReservaDTO res)
+    {
+        _reservaParaEliminar = res;
+        dialogo.Mensaje = $"¿Desea eliminar la reserva {res.Id}?";
+        dialogo.Mostrar();
+    }
+
+    private async Task Eliminar()
+    {
+        if (_reservaParaEliminar != null && usuarioActual != null)
         {
             try
             {
-                usuarioActual = UsuarioServicioLogin.GetUser();
-                logueado = UsuarioServicioLogin.IsLogueado();
-                if(!logueado)
-                {
-                    navegador.NavigateTo("/");
-                    return;
-                } 
-                reservas = await reservaListadoUseCase.Ejecutar();
+                await reservaBajaUseCase.EjecutarAsync(_reservaParaEliminar.Id, usuarioActual.Id);
+                reservas.Remove(_reservaParaEliminar);
             }
             catch (Exception ex)
             {
-                // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
-                Console.WriteLine($"Error al cargar las reservas: {ex.Message}");
+                Console.WriteLine($"Error al eliminar la reserva: {ex.Message}");
             }
-
-    
-        }
-        private void ConfirmarEliminacion(ReservaDTO res)
-        {
-             _reservaParaEliminar = res;
-            dialogo.Mensaje = $"¿Desea eliminar la reserva {res.Id}?";
-            dialogo.Mostrar();
-        }
-
-        private async Task Eliminar()
-        {
-            if (_reservaParaEliminar != null && usuarioActual != null)
-            {
-                await reservaBajaUseCase.EjecutarAsync(_reservaParaEliminar.Id, usuarioActual.Id);
-            reservas = await reservaListadoUseCase.Ejecutar();
+            
             }
         }
         void ModificarReserva(Guid id)  

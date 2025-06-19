@@ -93,25 +93,33 @@ else{
     }
     protected override async Task OnParametersSetAsync()
     {
-        if (!string.IsNullOrWhiteSpace(Id) && Guid.TryParse(Id, out _usuarioId))
+        try
         {
-            var us_hallado = await repositorioUsuario.ObtenerPorIDAsync(_usuarioId);
-            if (us_hallado is not null)
+            if (!string.IsNullOrWhiteSpace(Id) && Guid.TryParse(Id, out _usuarioId))
             {
-                _usuario.ID = us_hallado.Id;
-                _usuario.Nombre = us_hallado.Nombre;
-                _usuario.Apellido = us_hallado.Apellido;
-                _usuario.DNI = us_hallado.DNI;
-                _usuario.Email = us_hallado.Email;
-                _usuario.Telefono = us_hallado.Telefono;
-                _usuario.Contrasenia = us_hallado.Contrasenia;
-                _esNuevoUsuario = false;
+                var us_hallado = await repositorioUsuario.ObtenerPorIDAsync(_usuarioId);
+                if (us_hallado is not null)
+                {
+                    _usuario.ID = us_hallado.Id;
+                    _usuario.Nombre = us_hallado.Nombre;
+                    _usuario.Apellido = us_hallado.Apellido;
+                    _usuario.DNI = us_hallado.DNI;
+                    _usuario.Email = us_hallado.Email;
+                    _usuario.Telefono = us_hallado.Telefono;
+                    _usuario.Contrasenia = us_hallado.Contrasenia;
+                    _esNuevoUsuario = false;
+                }
             }
-        }
-        else if (!string.IsNullOrWhiteSpace(Id))
+            else if (!string.IsNullOrWhiteSpace(Id))
+            {
+                _errorDeId = true;
+            }
+        } catch (Exception ex)
         {
+            mensajeError = $"Error al procesar el ID: {ex.Message}";
             _errorDeId = true;
         }
+        
     }
 
     private async Task Aceptar()
@@ -122,33 +130,19 @@ else{
         {
             if (_esNuevoUsuario)
             {
-                try
-                {
-                    await UsuarioAltaUseCase.EjecutarAsync(_usuario, usuarioActual.Id);
-                }
-                catch (Exception ex)
-                {
-                    mensajeError += (ex);
-                }
+                await UsuarioAltaUseCase.EjecutarAsync(_usuario, usuarioActual.Id);
             }
             else
             {
-                if(_usuario.ID == usuarioActual.Id)
-                {
-                    mensajeError+=("No puedes modificar tu propio usuario desde esta página.");
-                    return;
-                }
-                try
-                {
-                    await UsuarioModificacionUseCase.Ejecutar(_usuarioId, _usuario, usuarioActual.Id);
-                    Console.WriteLine($"Usuario modificado: {_usuario.Nombre} {_usuario.Apellido}");
-                }
-                catch (Exception ex)
-                {
-                    mensajeError+=($"Error al modificar el usuario: {ex.Message}");
-                }
-
-
+               if(_usuario.ID == usuarioActual.Id)
+               {
+                   mensajeError+=("No puedes modificar tu propio usuario desde esta página.");
+                   return;
+               }
+               
+                
+                await UsuarioModificacionUseCase.Ejecutar(_usuarioId, _usuario, usuarioActual.Id);
+                Console.WriteLine($"Usuario modificado: {_usuario.Nombre} {_usuario.Apellido}");
             }
             Navegador.NavigateTo("ListadoUsuarios");
         }

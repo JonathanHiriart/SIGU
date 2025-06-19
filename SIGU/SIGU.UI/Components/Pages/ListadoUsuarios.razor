@@ -55,7 +55,8 @@ else
                 </tr>  
             }  
         </tbody>  
-    </table>  
+    </table> 
+    
 }  
 
 @code {
@@ -92,12 +93,19 @@ else
     }
 
     private async Task Eliminar()  
-    {  
-        if (_usuarioParaEliminar != null && usuarioActual != null)  
-        {  
-            await UsuarioBajaUseCase.EjecutarAsync(_usuarioParaEliminar.ID, usuarioActual.Id);  
-            usuarios = await UsuarioListadoUseCase.Ejecutar();  
-        }  
+    {
+        try
+        {
+           if (_usuarioParaEliminar != null && usuarioActual != null)
+           {
+               await UsuarioBajaUseCase.EjecutarAsync(_usuarioParaEliminar.ID, usuarioActual.Id);
+               usuarios = await UsuarioListadoUseCase.Ejecutar();
+           }
+        } catch (Exception ex)
+        {
+            
+        }
+        
     }  
 
     void ModificarUsuario(Guid id)  

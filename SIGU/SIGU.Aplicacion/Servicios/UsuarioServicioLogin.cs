@@ -6,10 +6,9 @@ public class UsuarioServicioLogin
 {
 	private Usuario? _usuario;
 
-	private bool _logueado;
+	private bool _logueado = false;
     public UsuarioServicioLogin() {
 		_usuario = null!;
-		_logueado = false;
     }
     public void SetUser(Usuario user) { 
 		_usuario = user;

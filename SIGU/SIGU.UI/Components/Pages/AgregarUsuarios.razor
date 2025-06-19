@@ -40,43 +40,25 @@ else
     <label class="col-form-label">Contraseña  
         <input @bind="usuarioNuevo.Contrasenia" class="form-control mb-2" placeholder="Contraseña" type="password" />  
     </label>
-    <div>
-    <label class="form-label">Permisos</label>
-    @if (admin)
-    {
-        @foreach (Permiso permiso in Enum.GetValues<Permiso>())
-        {
-            <div class="form-check">
-                <input class="form-check-input"
-                       type="checkbox"
-                       checked="@usuarioNuevo.permisos.Contains(permiso)"
-                       @onchange="(e => OnPermisoChanged(permiso, e.Value))" />
-                <label class="form-check-label">@permiso.ToString()</label>
-            </div>
-        }
-    }
-</div>
-
-    @code {
-        private void OnPermisoChanged(Permiso permiso, object? checkedValue)
-        {
-            bool isChecked = checkedValue is bool b && b;
-            if (isChecked)
+        
+        @if (admin)
+        {  
+          <div>
+            <label class="form-label">Permisos</label>
+            @foreach (Permiso permiso in Enum.GetValues<Permiso>())
             {
-                if (!usuarioNuevo.permisos.Contains(permiso))
-                    usuarioNuevo.permisos.Add(permiso);
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           checked="@usuarioNuevo.permisos.Contains(permiso)"
+                           @onchange="(e => OnPermisoChanged(permiso, e.Value))" />
+                    <label class="form-check-label">@permiso.ToString()</label>
+                </div>
             }
-            else
-            {
-                if (usuarioNuevo.permisos.Contains(permiso))
-                    usuarioNuevo.permisos.Remove(permiso);
-            }
+        </div>
         }
-    }
-
+    
     <button class="btn btn-primary mb-2" @onclick="AgregarUsuario">Agregar nuevo usuario</button>
-
-
     @if (!string.IsNullOrEmpty(mensaje))  
     {  
         <div class="mt-2">@mensaje</div>  
@@ -114,6 +96,20 @@ else
 
         cargando = false;  
     }  
+    private void OnPermisoChanged(Permiso permiso, object? checkedValue)
+    {
+        bool isChecked = checkedValue is bool b && b;
+        if (isChecked)
+        {
+            if (!usuarioNuevo.permisos.Contains(permiso))
+                usuarioNuevo.permisos.Add(permiso);
+        }
+        else
+        {
+            if (usuarioNuevo.permisos.Contains(permiso))
+                usuarioNuevo.permisos.Remove(permiso);
+        }
+    }
 
     private async Task AgregarUsuario()  
     {  
@@ -125,7 +121,7 @@ else
             Console.WriteLine("Usuario agregado correctamente.");  
             usuarioNuevo = new UsuarioDTO();  
         }  
-        catch (Exception ex)  
+        catch (Exception ex)
         {  
             mensaje = $"Error: {ex.Message}";  
         }  

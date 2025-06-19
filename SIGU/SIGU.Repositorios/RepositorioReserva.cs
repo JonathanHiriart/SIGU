@@ -27,7 +27,7 @@ public class RepositorioReserva(SIGUContext db) : IRepositorioReserva
     {
         var reservaExistente = await db.Reserva.FindAsync(id);
         if (reservaExistente == null) return;
-        reservaExistente.ActualizarDatos(reserva.usuarioID,reserva.EventoDeportivoId,reserva.FechaAlta, reserva.EstadoAsistencia,reserva.EventoDeportivo,reserva.Usuario);
+        reservaExistente.ActualizarDatos(reserva.usuarioID,reserva.EventoDeportivoId,reserva.FechaAlta, reserva.EstadoAsistencia);
         db.Reserva.Update(reservaExistente);
         await db.SaveChangesAsync();
     }

@@ -1,20 +1,19 @@
-@page "/ListadoEventosDeportivos"  
+@page "/ListadoEventosConCupo"  
 @rendermode InteractiveServer  
 @inject IRepositorioEventoDeportivo RepositorioED  
-@inject EventoDeportivoListadoUseCase EventoDeportivoListadoUseCase  
+@inject ListarEventosConCupoDisponibleUseCase eventosConCupoUseCase
 @inject EventoDeportivoBajaUseCase EventoBajaUseCase  
 @inject NavigationManager navegador  
 @inject UsuarioServicioLogin UsuarioServicioLogin  
 @inject ReservaAltaUseCase reservaAltaUseCase  
-<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar" Mensaje="@mensajeDialogo"/>  
-<PageTitle>Listado de Eventos Deportivos</PageTitle>  
+<PageTitle>Listado de Eventos con Cupo</PageTitle>  
 @if (!logueado)  
 {  
     <div class="alert alert-danger">Para ver el listado de eventos deportivos es necesario iniciar sesión.</div>  
 }  
 else  
 {  
-    <h1>Listado de Eventos Deportivos</h1>  
+    <h1>Listado de Eventos con Cupo disponible</h1>  
     <table class="table">  
         <thead>  
             <tr>  
@@ -42,8 +41,6 @@ else
                         <td>@evento.DuracionHoras</td>  
                         <td>@evento.CupoMaximo</td>  
                         <td>  
-                            <button class="btn btn-primary" @onclick="() => ModificarEvento(evento.Id)">Editar</button>  
-                            <button class="btn btn-danger" @onclick="() => ConfirmarEliminacion(evento)">Eliminar</button>  
                             <button class="btn btn-secondary" @onclick="() => inscribirse(evento)">Inscribirse</button>  
                         </td>  
                     </tr>  
@@ -62,12 +59,9 @@ else
         <div class="alert alert-danger mt-3">@mensajeError</div>
     }
 }  
-@code {  
+@code {
     List<EventoDeportivoDTO> eventos = new List<EventoDeportivoDTO>();  
-    private bool logueado;  
-    private DialogoConfirmacion dialogo = null!;  
-    private string mensajeDialogo = string.Empty;  
-    EventoDeportivoDTO? _eventoParaEliminar = null;  
+    private bool logueado;   
     Usuario? usuarioActual = null!;  
     private string? mensajeError;
 
@@ -82,56 +76,28 @@ else
                 navegador.NavigateTo("/");  
                 return;  
             }  
-            eventos = await EventoDeportivoListadoUseCase.EjecutarAsync();  
+            eventos = await eventosConCupoUseCase.Ejecutar();  
         }  
         catch (Exception ex)  
         {  
             // Manejo de errores, por ejemplo, mostrar un mensaje al usuario  
-           mensajeError+=($"Error al cargar los eventos: {ex.Message}");  
+            mensajeError+=($"Error al cargar los eventos: {ex.Message}");  
         }  
     }  
-
     public async Task inscribirse(EventoDeportivoDTO evento)  
     {  
         try  
         {  
             usuarioActual = UsuarioServicioLogin.GetUser();  
             ReservaDTO reserva = new ReservaDTO();  
-            reserva.setEventoDeportivoid(evento.Id);  
+            reserva.setEventoDeportivoid(evento.Id);
             reserva.setPersonaId(usuarioActual.Id);  
-            await reservaAltaUseCase.EjecutarAsync(reserva, usuarioActual.Id);  
+            await reservaAltaUseCase.EjecutarAsync(reserva, usuarioActual.Id);
+            eventos = await eventosConCupoUseCase.Ejecutar();
         }  
         catch (Exception ex)  
         {  
             mensajeError+=($"Error al inscribirse: {ex.Message}");  
         }  
-    }  
-    private void ConfirmarEliminacion(EventoDeportivoDTO eve)  
-    {  
-        _eventoParaEliminar = eve;  
-        mensajeDialogo = $"¿Desea eliminar el evento {eve.Nombre}?";  
-        dialogo.Mostrar();  
-    }  
-
-    private async Task Eliminar()  
-    {  
-        try  
-        {  
-            usuarioActual = UsuarioServicioLogin.GetUser();
-            if (_eventoParaEliminar != null && usuarioActual != null)  
-            {  
-                await EventoBajaUseCase.EjecutarAsync(_eventoParaEliminar.Id, usuarioActual.Id);  
-                eventos.Remove(_eventoParaEliminar);  
-            }  
-        }  
-        catch (Exception ex)  
-        {  
-            mensajeError+=($"Error al eliminar el evento: {ex.Message}");  
-        }  
-    }  
-
-    void ModificarEvento(Guid id)  
-    {  
-        navegador.NavigateTo($"/evento/{id}");  
     }  
 }

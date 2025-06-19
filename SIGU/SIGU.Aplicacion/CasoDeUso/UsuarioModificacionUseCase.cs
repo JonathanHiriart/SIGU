@@ -31,7 +31,7 @@ public class UsuarioModificacionUseCase
         Usuario? usuario = await _repositorioUsuario.ObtenerPorIDAsync(IdPersonaAModificar);
         if (usuario == null)
         {
-            throw new EntidadNotFoundException("El usuario a eliminar no existe");
+            throw new EntidadNotFoundException("El usuario a modificar no existe");
         }
         // 3. Validar datos del usuario modificado
 		if (string.IsNullOrWhiteSpace(usuarioModificado.Contrasenia))
