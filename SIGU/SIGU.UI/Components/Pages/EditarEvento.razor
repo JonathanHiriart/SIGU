@@ -131,14 +131,11 @@ else{
                 try
                 {
                     await eventoModificacionUseCase.EjecutarAsync(_evento ,_eventoId, usuarioActual.Id);
-                    Console.WriteLine($"Evento modificado: {_evento.Nombre}");
                 }
                 catch (Exception ex)
                 {
                     mensajeError+=($"Error al modificar el evento: {ex.Message}");
                 }
-
-
             }
             Navegador.NavigateTo("ListadoEventosDeportivos");
         }

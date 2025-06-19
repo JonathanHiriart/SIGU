@@ -21,7 +21,7 @@ public class ModificarPerfilPropioUseCase
             throw new ValidacionException("La contrase�a no puede ser nula o vac�a.");
         }
         usuarioNuevo.Contrasenia = _hasheador.Hashear(usuarioNuevo.Contrasenia);
-        // Validaci�n adicional para evitar argumentos nulos
+        // Validacion adicional para evitar argumentos nulos
         if (string.IsNullOrEmpty(usuarioNuevo.Nombre))
         {
             throw new ArgumentException("El nombre no puede ser nulo o vac�o.");
@@ -64,7 +64,6 @@ public class ModificarPerfilPropioUseCase
         // Crear una instancia de Usuario a partir del DTO
         Usuario? usuario = new Usuario(usuarioNuevo.Nombre, usuarioNuevo.Apellido, usuarioNuevo.DNI, usuarioNuevo.Email, usuarioNuevo.Telefono, usuarioNuevo.Contrasenia,usuarioNuevo.permisos);
         // Guardar el nuevo usuario en el repositorio
-        Console.WriteLine("saliendo de caso de uso ModificarPerfilPropioUseCase");
         await _repositorioUsuario.ModificarAsync(usuario, idUsuarioAmodificar);
     }
 }

@@ -139,10 +139,7 @@ else{
                    mensajeError+=("No puedes modificar tu propio usuario desde esta página.");
                    return;
                }
-               
-                
-                await UsuarioModificacionUseCase.Ejecutar(_usuarioId, _usuario, usuarioActual.Id);
-                Console.WriteLine($"Usuario modificado: {_usuario.Nombre} {_usuario.Apellido}");
+               await UsuarioModificacionUseCase.Ejecutar(_usuarioId, _usuario, usuarioActual.Id);
             }
             Navegador.NavigateTo("ListadoUsuarios");
         }

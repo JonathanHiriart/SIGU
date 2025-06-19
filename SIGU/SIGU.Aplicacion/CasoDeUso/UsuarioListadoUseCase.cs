@@ -7,11 +7,9 @@ namespace SIGU.Aplicacion.CasoDeUso;
 public class UsuarioListadoUseCase
 {
     private readonly IRepositorioUsuario _repositorioUsuario;
-    private readonly IServicioAutorizacion _servicioAutorizacion;
-    public UsuarioListadoUseCase(IRepositorioUsuario repositorioUsuario, IServicioAutorizacion servicioAutorizacion)
+    public UsuarioListadoUseCase(IRepositorioUsuario repositorioUsuario)
     {
         _repositorioUsuario = repositorioUsuario;
-        _servicioAutorizacion = servicioAutorizacion;
     }
     public async Task<List<UsuarioDTO>> Ejecutar()
     {
@@ -31,7 +29,6 @@ public class UsuarioListadoUseCase
             Telefono = u.Telefono,
             Contrasenia = u.Contrasenia
         }).ToList();
-
         return usuariosDTO;
     }
 }

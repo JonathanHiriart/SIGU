@@ -113,12 +113,10 @@ else
 
     private async Task AgregarUsuario()  
     {  
-        Console.WriteLine("Agregando usuario...");
         try  
         {  
 
-            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo,actual.Id);  
-            Console.WriteLine("Usuario agregado correctamente.");  
+            await usuarioAltaUseCase.EjecutarAsync(usuarioNuevo,actual.Id);
             usuarioNuevo = new UsuarioDTO();  
         }  
         catch (Exception ex)

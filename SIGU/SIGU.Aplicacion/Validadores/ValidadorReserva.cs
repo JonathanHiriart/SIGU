@@ -84,8 +84,6 @@ public class ValidadorReserva
             string msgError = "No se puede reservar un evento que ya ha comenzado.";
             return (false, msgError);
         }
-       
-       
         return (true, "");
     }
 }

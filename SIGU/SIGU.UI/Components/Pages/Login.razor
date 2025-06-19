@@ -31,7 +31,6 @@
     }
     async Task Iniciar()
     {
-        Console.WriteLine("Iniciando sesión...");
         if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Contraseña))
         {
             _mensajeError = "Email y contraseña son obligatorios.";
@@ -44,7 +43,6 @@
             {
                 usuarioServicioLogin.SetUser(usuario);
                 nav.NavigateTo("/Home");
-                Console.WriteLine("Logueado con exito");
             }
             else
             {

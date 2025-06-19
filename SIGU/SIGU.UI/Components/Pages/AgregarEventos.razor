@@ -81,7 +81,6 @@ else
         {   
             eventoNuevo.ResponsableId = actual.Id;
             await EventoDeportivoAltaUseCase.EjecutarAsync(eventoNuevo, actual.Id);  
-            Console.WriteLine("Evento agregado correctamente.");  
             eventoNuevo = new EventoDeportivoDTO();  
         }  
         catch (Exception ex)  

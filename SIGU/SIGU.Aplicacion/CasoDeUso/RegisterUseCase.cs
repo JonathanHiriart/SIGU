@@ -32,12 +32,10 @@ public class RegisterUseCase
         {
             esPrimerUsuario = usuariosExistentes.Count == 0;
         }
-        else {
-            esPrimerUsuario = false;
-        }
-
-
-
+        else 
+            {
+                esPrimerUsuario = false;
+            }
         // Validación adicional para evitar argumentos nulos
         if (string.IsNullOrEmpty(usuarioNuevo.Nombre))
         {

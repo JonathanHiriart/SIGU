@@ -23,10 +23,8 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
         var usuario = await db.Usuario.FindAsync(id);
         if (usuario == null)
         {
-            Console.WriteLine($"Usuario con ID {id} no encontrado.");
             return null!;
         }
-        Console.WriteLine($"Usuario encontrado: {usuario.Nombre} {usuario.Apellido}");
         return usuario;
     }
 
@@ -34,7 +32,6 @@ public class RepositorioUsuario(SIGUContext db) : IRepositorioUsuario
     {
         await db.Usuario.AddAsync(usuario);
         await db.SaveChangesAsync();
-        Console.WriteLine($"Usuario {usuario.Nombre} {usuario.Apellido} agregado exitosamente.");
     }
 
     public async Task ModificarAsync(Usuario usuario, Guid id)

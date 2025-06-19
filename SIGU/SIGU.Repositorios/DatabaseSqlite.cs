@@ -6,10 +6,7 @@ public class DatabaseSqlite
 {
     public static void Inicializar(SIGUContext context)
     {
-        if (context.Database.EnsureCreated())
-        {
-            Console.WriteLine("Database created successfully.");
-        }
+        context.Database.EnsureCreated()
         var connection = context.Database.GetDbConnection();
         connection.Open();
 

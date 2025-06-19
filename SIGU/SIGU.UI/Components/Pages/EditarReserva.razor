@@ -121,9 +121,7 @@ else{
             }
             else
             {
-                 Console.WriteLine($"Modificando reserva: {_reserva.EstadoAsistencia}");
                  await reservaModificacionUseCase.ModificarReservaAsync(_reservaId,_reserva,usuarioActual.Id);
-                 Console.WriteLine($"Evento modificado: {_reserva.Id}");
             }
             Navegador.NavigateTo("ListadoReservas");
         }

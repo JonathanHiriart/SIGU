@@ -37,7 +37,6 @@ public class EventoDeportivoModificacionUseCase
 		{
 			throw new ValidacionException(msgError);
 		}
-
 		await _repositorioEventoDeportivo.ModificarAsync(evento,idEvento);
 	}
 

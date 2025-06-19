@@ -14,7 +14,6 @@ public class ListarEventosConCupoDisponibleUseCase
         _repositorioEventoDeportivo = repositorioEventoDeportivo;
         _repositorioReserva = repositorioReserva;
     }
-
     public async Task< List<EventoDeportivoDTO>> Ejecutar()
     {
         List<EventoDeportivo> eventosConCupo = new List<EventoDeportivo>();
@@ -41,7 +40,6 @@ public class ListarEventosConCupoDisponibleUseCase
                 ResponsableId = e.ResponsbleID
             })
           .ToList();
-
         return listaEventosDTO;
     }
 

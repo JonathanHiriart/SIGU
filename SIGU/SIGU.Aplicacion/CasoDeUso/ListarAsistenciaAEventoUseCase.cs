@@ -17,7 +17,6 @@ public class ListarAsistenciaAEventoUseCase
         _repositorioUsuario = repositorioUsuario;
         _repositorioReserva = repositorioReserva;
     }
-
     public async Task<List<UsuarioDTO>> Ejecutar(Guid id)
     {
         // 1. Verificar existencia del evento
@@ -39,7 +38,6 @@ public class ListarAsistenciaAEventoUseCase
                     asistentes.Add(usuario);
                 }
             }
-
         }
         var usuariosDTO = asistentes.Select(u => new UsuarioDTO
         {

@@ -87,9 +87,7 @@ else
             if (actual != null)
             {
                 usuarioNuevo.setPermiso(actual.GetPermisos());
-                Console.WriteLine($"id a modificar {actual.Id}");
                 await modificarPerfilPropioUseCase.EjecutarAsync(usuarioNuevo, actual.Id);
-                Console.WriteLine("Usuario modificado correctamente.");
             }
         }
         catch (Exception ex)

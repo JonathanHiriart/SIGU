@@ -13,7 +13,6 @@ public class LoginUseCase
     }
     public async Task<Usuario?>IniciarSesion(string email, string password)
     {
-        
         Usuario? usuario = await _repositorioUsuario.obtenerPorEmailAsync(email);
         if (usuario == null)
         {
