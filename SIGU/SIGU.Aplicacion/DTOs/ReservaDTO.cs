@@ -9,4 +9,13 @@ public class ReservaDTO
     public Estado EstadoAsistencia { get; set; }
     public DateTime FechaAlta { get; set; }
 
+    public void setPersonaId(Guid idpersona)
+    {
+        this.PersonaId = idpersona;
+    }
+    public void setEventoDeportivoid(Guid id)
+    {
+        this.EventoDeportivoId = id;
+    }
+
 }
