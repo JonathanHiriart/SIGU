@@ -24,6 +24,15 @@ public class Usuario
         this.Contrasenia = contrasenia;
         this.Permisos = list ?? new List<Permiso>();
     }
+    public Usuario(string nombre, string apellido, int dni, string email, string telefono, string contrasenia)
+    {
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.DNI = dni;
+        this.Email = email;
+        this.Telefono = telefono;
+        this.Contrasenia = contrasenia;
+    }
 
     public void ActualizarDatos(string nombre, string apellido, int dni, string email, string telefono, string contrasenia, List<Permiso> permisos)
     {
@@ -35,5 +44,8 @@ public class Usuario
         Contrasenia = contrasenia;
         Permisos = permisos;
     }
-
+    public List<Permiso> GetPermisos()
+    {
+        return this.Permisos;
+    }
 }

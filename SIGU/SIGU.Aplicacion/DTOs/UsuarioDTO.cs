@@ -32,4 +32,8 @@ public class UsuarioDTO
     [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
     public string? Contrasenia { get; set; }
     public List<Permiso> permisos { get; set; } = new List<Permiso>();
+    public void setPermiso(List<Permiso> list)
+    {
+        permisos = list;
+    }
 }
