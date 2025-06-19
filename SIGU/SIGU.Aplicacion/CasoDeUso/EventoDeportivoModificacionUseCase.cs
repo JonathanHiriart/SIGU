@@ -19,7 +19,7 @@ public class EventoDeportivoModificacionUseCase
 		_servicioAutorizacion = servicioAutorizacion;
 		_validadorEventoDeportivo = validadorEventoDeportivo;
 	}
-	public async Task EjecutarAsync(EventoDeportivoDTO dto, Guid idUsuario)
+	public async Task EjecutarAsync(EventoDeportivoDTO dto,Guid idEvento, Guid idUsuario)
 	{
 		var estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.EventoModificacion);
 		if (!estaAutorizado)
@@ -38,7 +38,7 @@ public class EventoDeportivoModificacionUseCase
 			throw new ValidacionException(msgError);
 		}
 
-		await _repositorioEventoDeportivo.ModificarAsync(evento,idUsuario);
+		await _repositorioEventoDeportivo.ModificarAsync(evento,idEvento);
 	}
 
 }
