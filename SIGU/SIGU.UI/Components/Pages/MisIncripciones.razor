@@ -1,5 +1,5 @@
 @page "/MisIncripciones"  
-@rendermode InteractiveServer  
+@rendermode InteractiveServer
 @inject EventoDeportivoListadoUseCase EventoDeportivoListadoUseCase  
 @inject UsuarioServicioLogin UsuarioServicioLogin  
 @inject ReservaBajaUseCase reservaBajaUseCase  
@@ -14,7 +14,7 @@
 else if (reservas == null || !reservas.Any())
 {  
     <div class="alert alert-danger">  
-        no hay Reservas disponibles  
+        No hay Reservas disponibles  
     </div>  
 }  
 else  
@@ -78,7 +78,6 @@ else
         }  
         catch (Exception ex)  
         {  
-            // Manejo de errores, por ejemplo, mostrar un mensaje al usuario  
             Console.WriteLine($"Error al cargar las inscripciones: {ex.Message}");  
         }  
     } 
@@ -88,10 +87,10 @@ else
         {  
             var usuarioActual = UsuarioServicioLogin.GetUser();
             await reservaBajaUseCase.EjecutarAsync(reserva.Id,usuarioActual.Id);
+            reservas.Remove(reserva); //para actualizar la lista UI y que se actualice la vista
         }  
         catch (Exception ex)  
         {  
-            // Manejo de errores, por ejemplo, mostrar un mensaje al usuario  
             Console.WriteLine($"Error al darse de baja: {ex.Message}");  
         }  
     }
