@@ -6,11 +6,9 @@ namespace SIGU.Aplicacion.CasoDeUso;
 public class ReservaListadoUseCase 
 {
     private readonly IRepositorioReserva _repositorioReserva;
-    private readonly IServicioAutorizacion _servicioAutorizacion;
-    public ReservaListadoUseCase(IRepositorioReserva repositorioUsuario, IServicioAutorizacion servicioAutorizacion)
+    public ReservaListadoUseCase(IRepositorioReserva repositorioUsuario)
     {
         _repositorioReserva = repositorioUsuario;
-        _servicioAutorizacion = servicioAutorizacion;
     }
     public async Task<List<ReservaDTO>> Ejecutar()
     {

@@ -3,6 +3,7 @@ using SIGU.Aplicacion.Entidades;
 using SIGU.Aplicacion.DTOs;
 using SIGU.Aplicacion.Validadores;
 using SIGU.Aplicacion.Excepciones;
+using SIGU.Aplicacion.Enums;
 
 namespace SIGU.Aplicacion.CasoDeUso;
 public class ReservaModificacionUseCase
@@ -18,12 +19,12 @@ public class ReservaModificacionUseCase
     }
     public async Task ModificarReservaAsync(Guid idEliminar,ReservaDTO dtoModificado,Guid idUsuario)
     {
-        bool estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Enums.Permiso.ReservaModificacion);  
+        bool estaAutorizado = await _servicioAutorizacion.EstaAutorizado(idUsuario, Permiso.ReservaModificacion);  
         if (!estaAutorizado)
         {
-            throw new UnauthorizedAccessException("No tiene permiso para modificar reservas.");
+            throw new FalloAutorizacionException("No tiene permiso para modificar reservas.");
         }
-        Reserva? reservaModicada =new Reserva(dtoModificado.PersonaId,dtoModificado.EventoDeportivoId);
+        Reserva? reservaModicada =new Reserva(dtoModificado.PersonaId,dtoModificado.EventoDeportivoId,dtoModificado.EstadoAsistencia);
         var (esValido, msgError) = await validadorReserva.ValidarParaModificarAsync(reservaModicada);
         if (!esValido)
         {

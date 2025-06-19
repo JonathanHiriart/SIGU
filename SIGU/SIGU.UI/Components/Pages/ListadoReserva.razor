@@ -2,55 +2,74 @@
 @rendermode InteractiveServer
 @inject ReservaListadoUseCase reservaListadoUseCase
 @inject UsuarioServicioLogin UsuarioServicioLogin
+@inject ReservaBajaUseCase reservaBajaUseCase
+@inject NavigationManager navegador
+<DialogoConfirmacion @ref="dialogo" OnConfirmado="Eliminar" />
 
 <PageTitle>Listado de Reservas</PageTitle>
-
-<h1>Listado de Reservas</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Responsable ID</th>
-                <th>ID evento</th>
-                <th>Asistencia</th>
-                <th>Fecha Alta</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (reservas != null && reservas.Any())
-            {
-                foreach (var reserva in reservas)
+@if (!logueado)  
+{  
+    <div class="alert alert-danger">Para ver el el listado de usuarios es necesario iniciar sesión.</div>  
+}  
+else  
+{ 
+    <h1>Listado de Reservas</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Responsable ID</th>
+                    <th>ID evento</th>
+                    <th>Asistencia</th>
+                    <th>Fecha Alta</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (reservas != null && reservas.Any())
+                {
+                    foreach (var reserva in reservas)
+                    {
+                        <tr>
+                            <td>@reserva.Id</td>
+                            <td>@reserva.PersonaId</td>
+                            <td>@reserva.EventoDeportivoId</td>
+                            <td>@reserva.EstadoAsistencia</td>
+                            <td>@reserva.FechaAlta</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick="() => ModificarReserva(reserva.Id)">Editar</button>
+                            <button class="btn btn-danger" @onclick="() => ConfirmarEliminacion(reserva)">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@reserva.Id</td>
-                        <td>@reserva.PersonaId</td>
-                        <td>@reserva.EventoDeportivoId</td>
-                        <td>@reserva.EstadoAsistencia</td>
-                        <td>@reserva.FechaAlta</td>
-                        <td>
-                            <button class="btn btn-primary">Editar</button>
-                            <button class="btn btn-danger">Eliminar</button>
-                        </td>
+                        <td colspan="8">No hay reservas disponibles.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="8">No hay reservas disponibles.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+}
 
     @code {
         List<ReservaDTO> reservas = new List<ReservaDTO>();
-        
+        private bool logueado;
+        private DialogoConfirmacion dialogo = null!;
+        ReservaDTO? _reservaParaEliminar = null;
+        Usuario? usuarioActual = null!;
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                var usuarioActual = UsuarioServicioLogin.GetUser();
+                usuarioActual = UsuarioServicioLogin.GetUser();
+                logueado = UsuarioServicioLogin.IsLogueado();
+                if(!logueado)
+                {
+                    navegador.NavigateTo("/");
+                    return;
+                } 
                 reservas = await reservaListadoUseCase.Ejecutar();
             }
             catch (Exception ex)
@@ -61,4 +80,23 @@
 
     
         }
+        private void ConfirmarEliminacion(ReservaDTO res)
+        {
+             _reservaParaEliminar = res;
+            dialogo.Mensaje = $"¿Desea eliminar la reserva {res.Id}?";
+            dialogo.Mostrar();
+        }
+
+        private async Task Eliminar()
+        {
+            if (_reservaParaEliminar != null && usuarioActual != null)
+            {
+                await reservaBajaUseCase.EjecutarAsync(_reservaParaEliminar.Id, usuarioActual.Id);
+            reservas = await reservaListadoUseCase.Ejecutar();
+            }
+        }
+        void ModificarReserva(Guid id)  
+    {  
+        navegador.NavigateTo($"/reserva/{id}");  
+    }  
     }
