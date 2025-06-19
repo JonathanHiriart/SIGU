@@ -9,12 +9,12 @@
 <h1>Mis Inscripciones</h1>  
 @if (cargando)  
 {  
-    <p>Cargando eventos...</p>  
+    <p>Cargando inscripciones...</p>  
 }  
 else if (reservas == null || !reservas.Any())
 {  
     <div class="alert alert-danger">  
-        No hay Reservas disponibles  
+        No hay reservas disponibles  
     </div>  
 }  
 else  
@@ -63,6 +63,7 @@ else
         try  
         {  
             var usuarioActual = UsuarioServicioLogin.GetUser();  
+            cargando = false;
             if (usuarioActual != null)  
             {  
                 var lista = await reservaListadoUseCase.Ejecutar();
@@ -74,7 +75,7 @@ else
                 {  
                     reservas = new List<ReservaDTO>();  
                 }
-                cargando = false;  
+                
             } 
         }  
         catch (Exception ex)  
