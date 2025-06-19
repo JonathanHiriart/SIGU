@@ -63,7 +63,7 @@ else{
     private EventoDeportivoDTO _evento = new();
     [Parameter] public string? Id { get; set; }
 
-    private Guid _usuarioId;
+    private Guid _eventoId;
     private bool _esNuevoEvento = true;
     private bool _errorDeId = false;
     private bool tienePermiso = false;
@@ -88,9 +88,9 @@ else{
     }
     protected override async Task OnParametersSetAsync()
     {
-        if (!string.IsNullOrWhiteSpace(Id) && Guid.TryParse(Id, out _usuarioId))
+        if (!string.IsNullOrWhiteSpace(Id) && Guid.TryParse(Id, out _eventoId))
         {
-            EventoDeportivo? ev_hallado = await repositorioEvento.ObtenerPorIDAsync(_usuarioId);
+            EventoDeportivo? ev_hallado = await repositorioEvento.ObtenerPorIDAsync(_eventoId);
             if (ev_hallado !=null)
             {
                 _evento.Id = ev_hallado.Id;
@@ -130,7 +130,7 @@ else{
             {
                 try
                 {
-                    await eventoModificacionUseCase.EjecutarAsync(_evento , usuarioActual.Id);
+                    await eventoModificacionUseCase.EjecutarAsync(_evento ,_eventoId, usuarioActual.Id);
                     Console.WriteLine($"Evento modificado: {_evento.Nombre}");
                 }
                 catch (Exception ex)
@@ -140,7 +140,7 @@ else{
 
 
             }
-            Navegador.NavigateTo("ListadoEventos");
+            Navegador.NavigateTo("ListadoEventosDeportivos");
         }
         catch (Exception ex)
         {

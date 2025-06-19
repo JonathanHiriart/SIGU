@@ -34,6 +34,7 @@ public class RepositorioEventoDeportivo(SIGUContext db) : IRepositorioEventoDepo
     public async Task ModificarAsync(EventoDeportivo evento, Guid id) 
     { 
         var eventoExistente = await db.EventoDeportivo.FindAsync(id);
+        Console.WriteLine($"Evento a modificar: {eventoExistente?.Nombre} con ID: {eventoExistente?.Id}");
         if (eventoExistente != null)
         {
             eventoExistente.ActualizarDatos(evento.Nombre, evento.Descripcion, evento.FechaHoraInicio, evento.DuracionHoras, evento.CupoMaximo, evento.ResponsbleID);
