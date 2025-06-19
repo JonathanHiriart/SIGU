@@ -52,7 +52,7 @@ public class UsuarioAltaUseCase
             throw new ArgumentException("El teléfono no puede ser nulo o vacío.");
         }
 
-        Usuario usuarioAgregar = new Usuario(usuario.Nombre, usuario.Apellido, usuario.DNI, usuario.Email, usuario.Telefono, usuario.Contrasenia);
+        Usuario usuarioAgregar = new Usuario(usuario.Nombre, usuario.Apellido, usuario.DNI, usuario.Email, usuario.Telefono, usuario.Contrasenia, usuario.permisos);
 
         var (esValido, msgError) = await _validadorUsuario.ValidarParaAgregarAsync(usuarioAgregar);
         if (!esValido)

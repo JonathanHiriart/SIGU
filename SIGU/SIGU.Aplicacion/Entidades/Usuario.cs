@@ -14,6 +14,16 @@ public class Usuario
     public List<Reserva> Reservas { get; private set; } = new List<Reserva>();
 
     protected Usuario() { }
+    public Usuario(string nombre, string apellido, int dni, string email, string telefono, string contrasenia,List<Permiso> list)
+    {
+        this.Nombre = nombre;
+        this.Apellido = apellido;
+        this.DNI = dni;
+        this.Email = email;
+        this.Telefono = telefono;
+        this.Contrasenia = contrasenia;
+        this.Permisos = list ?? new List<Permiso>();
+    }
     public Usuario(string nombre, string apellido, int dni, string email, string telefono, string contrasenia)
     {
         this.Nombre = nombre;
@@ -34,5 +44,8 @@ public class Usuario
         Contrasenia = contrasenia;
         Permisos = permisos;
     }
-
+    public List<Permiso> GetPermisos()
+    {
+        return this.Permisos;
+    }
 }
