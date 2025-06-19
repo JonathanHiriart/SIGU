@@ -28,6 +28,7 @@ builder.Services.AddScoped<ValidadorReserva>();
 builder.Services.AddScoped<ValidadorUsuario>();
 builder.Services.AddSingleton<UsuarioServicioLogin>();
 //Usuarios
+builder.Services.AddScoped<ModificarPerfilPropioUseCase>();
 builder.Services.AddScoped<UsuarioAltaUseCase>();
 builder.Services.AddScoped<UsuarioBajaUseCase>();
 builder.Services.AddScoped<UsuarioListadoUseCase>();
